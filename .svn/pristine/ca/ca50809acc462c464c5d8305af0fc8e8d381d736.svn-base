@@ -1,0 +1,13 @@
+package kr.co.poetrypainting.mapper;
+
+import kr.co.poetrypainting.domain.cheatVO;
+/**
+ * 
+ * @author 이영미
+ * @Since 2023.04.05 AdminMapper최초생성
+ */
+public interface AdminMapper {
+	//관리자 1 회원등록
+	public void adminJoin(cheatVO admin);
+
+}

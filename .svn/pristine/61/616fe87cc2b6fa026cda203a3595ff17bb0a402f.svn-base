@@ -1,0 +1,19 @@
+
+package kr.co.poetrypainting.controller;
+/**
+ * 
+ * @author 이영미
+ * 2023-04-05 관리자
+ *
+ */
+
+import org.springframework.stereotype.Controller;
+
+import lombok.RequiredArgsConstructor;
+
+@Controller
+@RequiredArgsConstructor
+public class AdminController {
+
+}
+ 

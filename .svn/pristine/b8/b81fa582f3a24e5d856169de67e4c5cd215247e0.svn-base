@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.poetrypainting.mapper.ShopMapper">
+	<insert id="insertShop">
+		insert into shop (
+		shopNo,
+		shopName
+		) values (
+		#{memberNo},
+		#{nickname}
+		)
+	</insert>
+	<update id="updateName">
+		UPDATE shop
+		SET shopName = #{shopName}
+		WHERE shopNo = #{memberNo};
+	</update>
+	<update id="updateIntro">
+		UPDATE shop
+		SET introduction = #{intro}
+		WHERE shopNo = #{memberNo};
+	</update>
+
+	<select id="getBoardList" resultType="kr.co.poetrypainting.domain.BoardVo" parameterType="Long">
+		select *
+		from board
+		where memberNo = #{memberNo}
+		order by updateDate desc limit 16;
+	</select>
+
+	<update id="updateVisitCnt">
+		UPDATE shop
+		SET visits = visits + 1
+		WHERE shopNo = #{memberNo};
+	</update>
+</mapper>

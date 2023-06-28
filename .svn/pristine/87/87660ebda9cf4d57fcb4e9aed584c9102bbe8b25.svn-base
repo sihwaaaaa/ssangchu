@@ -1,0 +1,30 @@
+package kr.co.poetrypainting.domain.dto;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+
+import org.apache.ibatis.type.Alias;
+import org.springframework.web.util.UriComponentsBuilder;
+
+import lombok.Data;
+
+@Data
+@Alias("attach")
+public class AttachDTO {
+	private Long attNo;
+	private String attUuid;
+//	private String attOrigin;
+	private String attName;
+	private String attPath;
+	
+	private Long bno;
+//	private int uuidIdx;
+	
+	public String getUrl() throws UnsupportedEncodingException{
+		return UriComponentsBuilder.fromPath("")
+				.queryParam("attName", URLEncoder.encode(attName,"utf-8"))
+				.queryParam("attPath", attPath)
+				.queryParam("attUuid", attUuid)
+				.build().toUriString();
+	}
+}

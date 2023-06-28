@@ -1,0 +1,57 @@
+package kr.co.poetrypainting.service;
+
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import kr.co.poetrypainting.domain.ReplyVO;
+import kr.co.poetrypainting.mapper.ReplyMapper;
+import lombok.AllArgsConstructor;
+/**
+ * packageName    : kr.co.poetrypainting.service
+ * fileName       : ReplyServiceImpl
+ * author         :	오상현
+ * date           : 2023/04/11
+ * description    : ReplyServiceImpl
+ * ===========================================================
+ * DATE              AUTHOR             NOTE
+ * -----------------------------------------------------------
+ * 2023/04/11       오상현           후기 CRUD 서비스 생성
+ * 
+ * 
+ */
+@Service
+@AllArgsConstructor
+public class ReplyServiceImpl implements ReplyService{
+	private ReplyMapper replyMapper;
+	
+	@Override
+	public int register(ReplyVO vo) {		
+		return replyMapper.insert(vo);
+	}
+
+	@Override
+	public ReplyVO get(Long rno) {
+		return replyMapper.read(rno);
+	}
+
+	@Override
+	@Transactional
+	public boolean remove(Long rno) {
+	int result = replyMapper.delete(rno);
+	return result > 0;
+	}
+
+	@Override
+	public int modify(ReplyVO vo) {
+		return replyMapper.update(vo);
+	}
+
+	@Override
+	public List<ReplyVO> getList(Long memberNo) {
+		return replyMapper.getList(memberNo);
+	}
+	
+
+}

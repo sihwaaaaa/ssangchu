@@ -1,0 +1,325 @@
+<%--
+  User: banghansol
+  Date: 2023/04/07
+  Time: 3:35 PM
+--%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <jsp:include page="/WEB-INF/views/includes/head.jsp"/>
+</head>
+<body>
+    <jsp:include page="/WEB-INF/views/includes/header.jsp"/>
+
+    <!-- ================ start banner area ================= -->
+    <section class="blog-banner-area" id="category">
+        <div class="container h-100">
+            <div class="blog-banner">
+                <div class="text-center">
+                    <h1>Register</h1>
+                    <nav aria-label="breadcrumb" class="banner-breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="${pageContext.request.contextPath}/">Home</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">회원가입</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- ================ end banner area ================= -->
+
+    <!--================Login Box Area =================-->
+    <section class="login_box_area section-margin">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="login_box_img h-100">
+                        <div class="hover">
+                            <h4>이미 계정을 가지고 있으신가요?</h4>
+                            <p>로그인하셔서 근처의 여러 물품들을 확인해보세요!</p>
+                            <a class="button button-account" href="login">로그인하기</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="login_form_inner register_form_inner">
+                        <h3>회원가입</h3>
+                        <form class="row login_form" method="post" id="joinForm" >
+                            <div class="col-md-8 form-group">
+                                <input type="text" class="form-control" id="memberId" name="memberId" placeholder="아이디를 입력해주세요" onfocus="this.placeholder = ''" onblur="this.placeholder = '아이디를 입력해주세요'">
+                            </div>
+                            <div class="col-md-4 form-group">
+                                <button type="button" id="idCheck" class="btn btn-primary">중복확인</button>
+                            </div>
+                            <div class="col-md-8 form-group">
+                                <input type="text" class="form-control" id="nickname" name="nickname" placeholder="닉네임을 입력해주세요" onfocus="this.placeholder = ''" onblur="this.placeholder = '닉네임을 입력해주세요'">
+                            </div>
+                            <div class="col-md-4 form-group">
+                                <button type="button" id="nickCheck" class="btn btn-primary">중복확인</button>
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <input type="password" class="form-control" id="password" name="password" placeholder="비밀번호를 입력해주세요" onfocus="this.placeholder = ''" onblur="this.placeholder = '비밀번호를 입력해주세요'">
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" placeholder="비밀번호를 다시 입력해주세요" onfocus="this.placeholder = ''" onblur="this.placeholder = '비밀번호를 다시 입력해주세요'">
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <input type="email" class="form-control" id="email" name="email" placeholder="이메일 주소를 입력해주세요" onfocus="this.placeholder = ''" onblur="this.placeholder = '이메일 주소를 입력해주세요'">
+                            </div>
+                            <div class="col-md-8 form-group">
+                                <input type="text" class="form-control text-truncate" id="addr" name="addr" placeholder="주소 검색을 해주세요" onfocus="this.placeholder = ''" onblur="this.placeholder = '주소 검색을 해주세요'"  readonly>
+                            </div>
+                            <div class="col-md-4 form-group">
+                                <button type="button" class="btn btn-primary" id="addressSearch">주소검색</button>
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <input type="text" class="form-control" id="addrDetail" name="addrDetail" placeholder="상세주소를 입력해주세요" onfocus="this.placeholder = ''" onblur="this.placeholder = '상세주소를 입력해주세요'">
+                            </div>
+                            <%--
+                            <div class="col-md-12 form-group">
+                                <div class="creat_account">
+                                    <input type="checkbox" id="f-option2" name="selector">
+                                    <label for="f-option2">Keep me logged in</label>
+                                </div>
+                            </div>
+                            --%>
+                            <input type="hidden" name="x">
+                            <input type="hidden" name="y">
+                            <input type="hidden" name="dong">
+                            <div class="col-md-12 form-group">
+                                <button type="submit" value="submit" class="button button-register w-100">Register</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--================End Login Box Area =================-->
+
+
+
+    <jsp:include page="/WEB-INF/views/includes/footer.jsp"/>
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+    <script>
+        $(document).ready(function(){
+
+            $('#myModal').on('shown.bs.modal', function () {
+                $('#myInput').trigger('focus')
+            })
+
+            $("#idCheck").click(function () {
+
+                var memberId = $("#memberId").val().trim()
+
+                if(memberId.length < 4){
+                    console.log("4자 이상 입력해주세요!")
+                    return false;
+                }
+
+                var data = {
+                    memberId: memberId
+                }
+                console.log(data);
+                var jsonStr = JSON.stringify(data);
+
+
+                $.ajax({
+                    url:'idCheck',
+                    type: 'post',
+                    contentType: 'application/json; charset=utf-8',
+                    data: jsonStr,
+                    dataType: 'json',
+                    success: function (chk) {
+                        console.log(chk);
+                        if(chk.data.result){
+                            console.log("가입가능");
+                            if($("#idCheckResult").length){
+                                $("#idCheckResult")
+                                    .attr('class', 'text-success')
+                                    .text('사용 가능한 ID 입니다!');
+                            } else{
+                                $("#memberId").parent().append('<div id="idCheckResult" class="text-success">사용 가능한 ID 입니다!</div>')
+                            }
+                        } else {
+                            console.log("가입불가");
+                            if($("#idCheckResult").length){
+                                $("#idCheckResult")
+                                    .attr('class', 'text-danger')
+                                    .text('중복된 id입니다!');
+                            } else {
+                                $("#memberId").parent().append('<div id="idCheckResult" class="text-danger">중복된 id입니다!</div>')
+                            }
+                            /*
+                            $("#memberId").parent().append('<div id="idCheckResult" class="text-danger">중복된 id입니다!</div>')
+                            */
+                        }
+                    }
+                })
+            });
+
+            $("#nickCheck").click(function () {
+                console.log($("#nickname").val());
+            });
+
+
+            $("#addressSearch").click(function(){ //주소입력칸을 클릭하면
+                //카카오 지도 발생
+                new daum.Postcode({
+                    oncomplete: function(data) { //선택시 입력값 세팅
+                        document.getElementById("addr").value = data.address; // 주소 넣기
+                        document.querySelector("input[name=addrDetail]").focus(); //상세입력 포커싱
+                        console.log(data.address);
+                        $.ajax({
+                            url : 'https://dapi.kakao.com/v2/local/search/address.json?query=' + data.address,
+                            headers: { 'Authorization': 'KakaoAK 1cbbb5e35159be304d08cd94adc6fa18'},
+                            type: 'GET'
+                        }).done(function(data) {
+                            console.log(data);
+                            console.log(data.documents[0].road_address.x);
+                            console.log(data.documents[0].road_address.y);
+                            console.log(data.documents[0].road_address.region_3depth_name);
+
+                            $('input[name=x]').attr('value',data.documents[0].road_address.x);
+                            $('input[name=y]').attr('value',data.documents[0].road_address.y);
+                            $('input[name=dong]').attr('value',data.documents[0].road_address.region_3depth_name);
+
+
+                            // document.getElementById("x").value = data.documents[0].road_address.x;
+                            // document.getElementById("y").value = data.documents[0].road_address.y;
+                        })
+                    }
+                }).open();
+            });
+
+
+
+            (function($) {
+                "use strict";
+
+                // validate contactForm form
+                $(function() {
+                    $('#joinForm').validate({
+                        rules: {
+                            memberId: {
+                                required: true,
+                                minlength: 4,
+                                maxlength: 12
+                            },
+                            nickname: {
+                                required: true,
+                                minlength: 4,
+                                maxlength: 12
+                            },
+                            password: {
+                                required: true,
+                                minlength: 4
+                            },
+                            confirmPassword: {
+                                required: true,
+                                minlength: 4,
+                                equalTo: "#password"
+                            },
+                            email: {
+                                required: true,
+                                email: true
+                            },
+                            addr: {
+                                required: true
+                            }
+                        },
+                        messages: {
+                            memberId: {
+                                required: "회원 ID는 필수 항목입니다!",
+                                minlength: "최소 4글자 이상 입력해주세요",
+                                maxlength: "12자 이내로 입력해주세요"
+                            },
+                            nickname: {
+                                required: "닉네임은 필수 항목입니다!",
+                                minlength: "최소 4글자 이상 입력해주세요",
+                                maxlength: "12자 이내로 입력해주세요"
+                            },
+                            password: {
+                                required: "비밀번호는 필수 항목입니다!",
+                                minlength: "최소 4글자 이상 입력해주세요"
+                            },
+                            confirmPassword: {
+                                required: "비밀번호는 필수 항목입니다!",
+                                minlength: "최소 4글자 이상 입력해주세요",
+                                equalTo: "비밀번호와 일치하지 않습니다!"
+                            },
+                            email: {
+                                required: "이메일은 필수 항목입니다!",
+                                email: "이메일 양식이 아닙니다!"
+                            },
+                            addr: {
+                                required: "주소는 필수항목입니다!"
+                            }
+                        }
+                        ,
+                        submitHandler: function(form) {
+                            event.preventDefault();
+
+                            var formArray = $(form).serializeArray();
+
+                            console.log(formArray)
+
+                            var userJson = {};
+
+                            for(let idx in formArray){
+                                console.log(formArray[idx]);
+                                console.log(formArray[idx]['name']);
+                                console.log(formArray[idx]['value']);
+
+                                userJson[formArray[idx]['name']] = formArray[idx]['value'];
+
+                            }
+
+                            console.log('userJson', userJson);
+
+                            $(form).ajaxSubmit({
+                                // type:"POST",
+                                // data: JSON.stringify(userJson),
+                                // contentType: 'application/json; charset=utf-8',
+                                dataType: 'json',
+                                url:"join",
+                                success: function(data) {
+                                    console.log(data);
+
+                                    alert("회원가입에 성공하였습니다!");
+                                    $(location).attr('href', '${pageContext.request.contextPath}/');
+
+
+                                    // $('#exampleModal').modal('show')
+
+                                    $('#contactForm :input').attr('disabled', 'disabled');
+                                    $('#contactForm').fadeTo( "slow", 1, function() {
+                                        $(this).find(':input').attr('disabled', 'disabled');
+                                        $(this).find('label').css('cursor','default');
+                                        $('#success').fadeIn()
+                                        $('.modal').modal('hide');
+                                        $('#success').modal('show');
+                                    })
+                                },
+                                error: function() {
+                                    $('#contactForm').fadeTo( "slow", 1, function() {
+                                        $('#error').fadeIn()
+                                        $('.modal').modal('hide');
+                                        $('#error').modal('show');
+                                    })
+                                }
+
+
+                            })
+
+                        }
+                    })
+                })
+
+            })(jQuery)
+        })
+    </script>
+</body>
+</html>

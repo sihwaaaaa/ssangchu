@@ -1,0 +1,64 @@
+<%--
+  Created by IntelliJ IDEA.
+  User: banghansol
+  Date: 2023/04/17
+  Time: 4:52 PM
+  To change this template use File | Settings | File Templates.
+--%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <jsp:include page="/WEB-INF/views/includes/head.jsp"/>
+</head>
+<body>
+  <jsp:include page="/WEB-INF/views/includes/header.jsp"/>
+  <section class="section-margin">
+    <div class="container">
+      <div class="card my-4">
+        <div class="card-body row">
+          <div class="col-md-4 d-inline">
+            <i class="fas fa-camera h1"></i>
+            <div>함상점</div>
+            <div>청상추</div>
+            <button class="btn btn-primary">내 상점 관리</button>
+          </div>
+          <div class="col-md-8 d-inline">
+            <div class="col-sm-4 d-inline">
+              <input class="" type="text" id="shopName" name="shopName" placeholder="상점 이름을 입력해주세요!">
+              <button class="btn btn-primary">상점명 수정</button>
+            </div>
+            <div class="col-sm-4 d-inline">
+              <button class="btn btn-warning">내 정보 수정</button>
+              <button class="btn btn-primary">내 주소록 관리</button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <div class="card  my-4">
+        <div class="card-body">
+          <nav>
+            <div class="nav nav-tabs" id="nav-tab" role="tablist">
+              <button class="nav-link active" id="nav-boardlist-tab" data-toggle="tab" data-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">상품목록</button>
+              <button class="nav-link" id="nav-profile-tab" data-toggle="tab" data-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">후기목록</button>
+              <button class="nav-link" id="nav-myreply-tab" data-toggle="tab" data-target="#nav-myreply" type="button" role="tab" aria-controls="nav-contact" aria-selected="false">내가 쓴 후기</button>
+              <button class="nav-link" id="nav-mytrade-tab" data-toggle="tab" data-target="#nav-mytrade" type="button" role="tab" aria-controls="nav-contact" aria-selected="false">내 요청</button>
+              <button class="nav-link" id="nav-applytrade-tab" data-toggle="tab" data-target="#nav-applytrade" type="button" role="tab" aria-controls="nav-contact" aria-selected="false">받은 요청</button>
+            </div>
+          </nav>
+          <div class="tab-content" id="nav-tabContent">
+            <div class="tab-pane fade show active" id="nav-boardlist" role="tabpanel" aria-labelledby="nav-home-tab">상품목록</div>
+            <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">후기목록</div>
+            <div class="tab-pane fade" id="nav-myreply" role="tabpanel" aria-labelledby="nav-contact-tab">내가 쓴 후기</div>
+            <div class="tab-pane fade" id="nav-mytrade" role="tabpanel" aria-labelledby="nav-contact-tab">내 요청</div>
+            <div class="tab-pane fade" id="nav-applytrade" role="tabpanel" aria-labelledby="nav-contact-tab">받은 요청</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <jsp:include page="/WEB-INF/views/includes/footer.jsp"/>
+</body>
+</html>

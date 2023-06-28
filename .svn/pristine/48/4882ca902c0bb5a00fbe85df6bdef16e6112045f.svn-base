@@ -1,0 +1,83 @@
+package kr.co.poetrypainting.controller;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import kr.co.poetrypainting.domain.BoardVo;
+import kr.co.poetrypainting.domain.MemberVO;
+import kr.co.poetrypainting.mapper.AddressMapper;
+import kr.co.poetrypainting.service.AddressService;
+import kr.co.poetrypainting.service.BoardService;
+import kr.co.poetrypainting.service.MemberService;
+import lombok.Data;
+import lombok.extern.log4j.Log4j;
+
+/**
+ * 
+* @packageName    : kr.co.poetrypainting.controller
+* @fileName        : BoardController.java
+* @author        : 이시화
+* @date            : 2023.04.09
+* @description            :
+* ===========================================================
+* DATE              AUTHOR             NOTE
+* -----------------------------------------------------------
+* 2023.04.09        이시화       최초 생성
+ */
+@Controller
+@Log4j
+@RequestMapping("/board/*")
+@Data
+public class BoardController {
+	private final BoardService boardService;
+	private final AddressMapper addressMapper;
+	/**
+	 * 
+	 * @author : 이시화
+	 * @todo : 글 목록 리스트 출력 
+	 * @param : list<BoardVo>
+	 *
+	 * @date : 2023. 4. 10.
+	 */
+	@GetMapping("/list")
+	public void list(Model model){
+		model.addAttribute("list", boardService.getList());
+	}
+	
+	/**
+	 * 
+	 * @author : 이시화
+	 * @todo : 게시글 번호 조회 
+	 * @param : bno
+	 * @return : 
+	 *
+	 * @date : 2023. 4. 11.
+	 */
+	@GetMapping("/get")
+	public void get(Model model, Long bno){
+		model.addAttribute("board",boardService.get(bno));
+	}
+	
+	@GetMapping("/write")
+	public void write(@SessionAttribute("loginMember")MemberVO member, Model model,RedirectAttributes rttr){
+		model.addAttribute("category",boardService.getCategoryList());
+		model.addAttribute("addr",addressMapper.getMyList(member.getMemberNo()));
+		
+	}
+	
+//	@PostMapping("/write")
+//	public String write(BoardVo vo, RedirectAttributes rttr){
+//		return "redirect:/board/list";
+//	}
+	
+
+}

@@ -1,0 +1,38 @@
+package kr.co.poetrypainting.controller;
+
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import kr.co.poetrypainting.domain.ReplyVO;
+import kr.co.poetrypainting.service.ReplyService;
+import lombok.AllArgsConstructor;
+import lombok.extern.log4j.Log4j;
+
+@RequestMapping("replies")
+@RestController
+@Log4j
+@AllArgsConstructor
+public class ReplyController {
+	private ReplyService replyService;
+	
+	@GetMapping({"get/bno", "list/{bno}/{rno}"})
+	public List<ReplyVO> getList(@PathVariable Long bno, @PathVariable(required=false) Optional<Long> rno) {
+		log.warn(bno);
+		log.warn(rno.isPresent() ? rno.get() : 0L);
+		log.warn(rno.orElse(0L));
+		return replyService.getList2(bno, rno.orElseGet(() -> 0L));
+	}
+	
+	@GetMapping("{rno}")
+	public ReplyVO get(@PathVariable Long bno) {
+		log.warn(bno);
+		return replyService.getBno(bno);
+	}
+}
+
+

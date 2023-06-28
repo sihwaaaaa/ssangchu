@@ -1,0 +1,131 @@
+package kr.co.poetrypainting.controller;
+
+
+import kr.co.poetrypainting.domain.MemberVO;
+import kr.co.poetrypainting.domain.dto.ApiResponse;
+import kr.co.poetrypainting.domain.dto.JoinDTO;
+import kr.co.poetrypainting.domain.dto.LoginDTO;
+import kr.co.poetrypainting.service.MemberService;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * packageName    : kr.co.poetrypainting.controller
+ * fileName       : MemberController
+ * author         : 방한솔
+ * date           : 2023/04/06
+ * description    : 회원 컨트롤러
+ * ===========================================================
+ * DATE              AUTHOR             NOTE
+ * -----------------------------------------------------------
+ * 2023/04/06        방한솔            최초 생성
+ * 2023/04/07        방한솔            로그인, 로그아웃 기능 추가
+ */
+@Controller
+@RequestMapping("/member/*")
+@Data
+@AllArgsConstructor
+@Slf4j
+public class MemberController {
+    private MemberService memberService;
+
+    /**
+     * 로그인 화면 이동
+     *
+     * @return member/login jsp
+     */
+    @GetMapping("/login")
+    public String loginGet(){
+        return "member/login";
+    }
+
+    /**
+     * 회원가입 화면 이동
+     *
+     * @return member/join jsp
+     */
+    @GetMapping("/join")
+    public String joinGet(){
+        return "member/join";
+    }
+
+    /**
+     * post form 요청으로 로그인한다. (세션부여)
+     *
+     * @param loginForm 가입폼
+     * @param request  the request
+     * @param response the response
+     * @return 메인화면으로 리다이렉트
+     */
+    @PostMapping("/login")
+    public String loginPost(LoginDTO loginForm, HttpServletRequest request, HttpServletResponse response){
+        log.info("login Post");
+        log.info("{}", loginForm);
+
+        MemberVO loginMember = memberService.login(loginForm);
+
+
+        if(loginMember == null){
+            String errorMsg = "아이디가 없거나 비밀번호가 틀렸습니다";
+            request.setAttribute("errorMsg", errorMsg);
+
+            return "member/login";
+        } else {
+            request.getSession().setAttribute("loginMember", loginMember);
+        }
+
+        return "redirect:/";
+    }
+
+    /**
+     * 현재 로그인 한 사용자를 로그아웃 한다.(세션삭제)
+     *
+     * @param request the request
+     * @return 메인화면으로 리다이렉트
+     */
+    @GetMapping("/logout")
+    public String logout(HttpServletRequest request){
+        request.getSession().invalidate();
+
+        return "redirect:/";
+    }
+
+    @ResponseBody
+    @PostMapping(value = "/idCheck", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ApiResponse<Map<String, Object>>> idCheck(@RequestBody Map<String, Object> stringMap){
+        String memberId = (String) stringMap.get("memberId");
+        log.info("{}", memberId);
+        Boolean idCheck  = memberService.idCheck(memberId);
+
+        Map<String, Object> map = new HashMap<>();
+
+        map.put("result", idCheck);
+
+        ApiResponse<Map<String, Object>> result = ApiResponse
+                .<Map<String, Object>>builder()
+                .resultCode("200")
+                .resultMsg("중복 조회에 성공하였습니다.")
+                .data(map)
+                .build();
+
+        return ResponseEntity.ok(result);
+    }
+
+    @PostMapping("/join")
+    public String joinPost(JoinDTO joinForm){
+        log.info("{}", joinForm);
+
+        //return "redirect:/";
+        return "member/join";
+    }
+}

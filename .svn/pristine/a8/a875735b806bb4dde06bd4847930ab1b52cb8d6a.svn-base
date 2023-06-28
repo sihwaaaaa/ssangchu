@@ -1,0 +1,11 @@
+package kr.co.poetrypainting.domain.dto;
+
+public class PenaltyDTO {
+	  
+	private Long penaltyNo; // 처벌번호
+	private String penaltyName; // 처벌명
+	private String penaltyEtc; // 기타사유
+	  
+	  // 생성자, getter, setter 메소드 생략
+	  
+	}

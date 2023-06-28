@@ -1,0 +1,111 @@
+package kr.co.poetrypainting.controller;
+
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
+import kr.co.poetrypainting.domain.*;
+import kr.co.poetrypainting.mapper.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import kr.co.poetrypainting.domain.dto.AttachDTO;
+import kr.co.poetrypainting.domain.dto.Criteria;
+import kr.co.poetrypainting.domain.dto.PageDto;
+import kr.co.poetrypainting.service.BoardService;
+import kr.co.poetrypainting.service.ReplyService;
+import kr.co.poetrypainting.service.TradeService;
+import lombok.Data;
+import lombok.extern.log4j.Log4j;
+
+/**
+ * @author : 함준혁
+ * @packageName : kr.co.poetrypainting.controller
+ * @fileName : ShopController.java
+ * @date : 2023.04.19
+ * @description : 상점페이지 컨트롤러
+ * ===========================================================
+ * DATE              AUTHOR             NOTE
+ * -----------------------------------------------------------
+ * 2023.04.19        함준혁       최초 생성
+ */
+@Controller
+@Log4j
+@RequestMapping("/shop/*")
+@Data
+public class ShopController {
+    /*
+    세미프로젝트 상점페이지
+    상점페이지 접속 방법
+    1. index -> 내상점
+    2. index -> 상품사진에서 상점 보러가기
+    3. http://localhost/board/get?bno=4 에서 게시글에 있는 nickname
+    4. http://localhost/board/get?bno=4 에서 후기에 있는 nickname
+    :::::::::::::::::::::::: To do list ::::::::::::::::::::::::
+    - 1번방법으로 이동 시 session의 memberNo 받아오기
+    - 2번방법으로 이동 시 게시글 작성자의 memberNo 받아오기
+    - 3번방법으로  이동 시 게시글 작성자의 memberNo 받아오기
+    - 4번방법으로 이동 시 후기 작성자의 memberNo 받아오기
+
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+     */
+    @Autowired
+    private MemberMapper memberMapper;
+    @Autowired
+    private AddressMapper addressMapper;
+    @Autowired
+    private BoardMapper boardMapper;
+    @Autowired
+    private ShopMapper shopMapper;
+
+    @Autowired
+    private ReplyMapper replyMapper;
+
+
+    @GetMapping("{memberNo}")
+    public String shop(Model model, @PathVariable Long memberNo, Criteria cri) {
+        if(memberNo == null){
+            return "redirect:/member/login"; // 로그인되지 않은 경우 로그인 페이지로 redirect
+        }
+
+        MemberVO memberVO = memberMapper.get(memberNo); // 회원 정보 가져오기
+
+        ShopVO shopVO = shopMapper.get(memberNo); // 상점 정보 가져오기
+
+        List<AddressVO> addressVOList = addressMapper.getMyList(memberNo); // 회원의 주소 목록 가져오기
+
+        AddressVO addressVO = addressVOList.get(0); // 회원의 첫번째 주소 가져오기
+
+        List<BoardVo> boardVoList = shopMapper.getBoardList(memberNo); // 회원이 가지고 있는 게시글 목록 가져오기
+
+        List<ReplyVO> replyVOList = replyMapper.getList(memberNo); // 후기 목록 가져오기
+
+        if(shopVO == null){
+            shopMapper.insertShop(memberNo, memberVO.getNickname()); // 처음으로 상점 접속시 기본 상점네임 생성
+        }
+        shopMapper.updateVisitCnt(memberNo); // 접속 시 방문수 상승
+
+        long regTime = memberVO.getRegDate().getTime();
+        long now = System.currentTimeMillis();
+        long openDays = (now - regTime) / (24 * 60 * 60 * 1000);
+        model.addAttribute("list", boardMapper.getMyList(memberNo));
+        model.addAttribute("page", new PageDto(boardMapper.getTotalCnt(), cri));
+        model.addAttribute("memberVO", memberVO);
+        model.addAttribute("addressVO", addressVO);
+        model.addAttribute("boardVoList", boardVoList);
+        model.addAttribute("replyVOList", replyVOList);
+        model.addAttribute("shopVO", shopVO);
+        model.addAttribute("openDays", openDays);
+
+        return "shop";
+    }
+
+}

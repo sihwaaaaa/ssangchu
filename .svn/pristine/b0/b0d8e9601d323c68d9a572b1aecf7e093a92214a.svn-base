@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  
+  <!-- since 2023/04/06 생성 조회 삭제기능 -->
+  <!-- since 2023/04/07 업데이트 추가 -->
+  <!-- since 2023/04/10 memberNo를 통해 addr조회 추가 -->
+  <!-- since 2023/04/11 memberNo를 통해 해당 회원의 addr조회 추가 -->  
+  
+  
+<mapper namespace="kr.co.poetrypainting.mapper.AddressMapper">
+
+ 	<select id="getList" resultType="address">
+ 		select * from address where addrNo > 0
+ 	</select>
+
+ 	<select id="getMyList" resultType="address">
+ 		select * from address where memberNo = #{memberNo}
+ 	</select> 	
+ 	
+ 	<select id="read" resultType="address">
+ 		select * from address where addrNo = #{addrNo}
+ 	</select>
+
+ 	<select id="readByMember" resultType="Long">
+ 		select addrNo from address a inner join member m on a.memberNo = m.memberNo where a.memberNo = #{memberNo} 		
+ 	</select>
+ 	
+    <insert id="insert">
+        insert into address(memberNo, addr, addrDetail, y, x) values          
+            (#{memberNo}, #{addr}, #{addrDetail}, #{y}, #{x})
+    </insert>
+    
+    <insert id="insertSelectkey">
+    	<selectKey keyProperty="addrNo" order="BEFORE" resultType="long">
+    		select max(addrNo)+1 from address
+    	</selectKey>
+        insert into address(addrNo, memberNo, addr, addrDetail, y, x) values (#{addrNo}, #{memberNo}, #{addr}, #{addrDetail}, #{y}, #{x})
+    </insert>
+    
+    <delete id="delete">
+ 		delete from address where addrNo = #{addrNo}
+ 	</delete>
+    
+    <update id="update">
+    	update address set
+    	addr = #{addr}
+    	,addrDetail = #{addrDetail}
+    	,y = #{y}
+    	,x = #{x}
+    	,updateDate = now()
+    	where addrNo = #{addrNo}
+    </update>
+    
+  
+</mapper>

@@ -1,0 +1,62 @@
+package kr.co.poetrypainting.service;
+
+import kr.co.poetrypainting.domain.MemberVO;
+import kr.co.poetrypainting.domain.dto.LoginDTO;
+
+import java.util.List;
+
+/**
+ * packageName    : kr.co.poetrypainting.service
+ * fileName       : MemberService
+ * author         : 방한솔
+ * date           : 2023/04/05
+ * description    :
+ * ===========================================================
+ * DATE              AUTHOR             NOTE
+ * -----------------------------------------------------------
+ * 2023/04/05        방한솔            최초 생성
+ */
+public interface MemberService {
+
+    /**
+     * 입력한 회원정보로 회원가입을 한다.
+     *
+     * @param memberVO 회원 VO
+     * @return 처리결과 (1 = 성공, 0 = 실패)
+     */
+    int register(MemberVO memberVO);
+
+
+    /**
+     * 입력받은 회원정보로 로그인 한다.
+     *
+     * @param loginDTO 회원 DTO
+     * @return 회원 VO
+     */
+    MemberVO login(LoginDTO loginDTO);
+
+    /**
+     * 전체 회원정보를 조회한다.
+     *
+     * @return 회원VO 리스트
+     */
+    List<MemberVO> getList();
+
+    /**
+     * 회원정보를 수정한다.
+     *
+     * @param memberVO 회원 VO
+     * @return 처리결과 (1 = 성공, 0 = 실패)
+     */
+    int modify(MemberVO memberVO);
+
+    int passwordChange(MemberVO memberVO);
+
+    /**
+     * 회원탈퇴를 한다.
+     *
+     * @param memberVO 회원 VO
+     * @return 처리결과 (1 = 성공, 0 = 실패)
+     */
+    int withdraw(MemberVO memberVO);
+}

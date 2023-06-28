@@ -1,0 +1,33 @@
+package kr.co.poetrypainting.domain;
+
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.apache.ibatis.type.Alias;
+import org.springframework.stereotype.Component;
+
+import java.util.Date;
+
+/**
+ * 회원 VO
+ * @author 방한솔
+ *
+ */
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@Component
+public class MemberVO {
+    private Long memberNo;
+    private String memberId;
+    private String password;
+    private String email;
+    private String nickname;
+    private Date regdate;
+    private Date updatedate;
+    private int credit;
+    private Boolean admin;
+}

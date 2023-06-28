@@ -1,0 +1,242 @@
+package kr.co.poetrypainting.controller;
+
+
+import com.mashape.unirest.http.exceptions.UnirestException;
+import kr.co.poetrypainting.domain.AddressVO;
+import kr.co.poetrypainting.domain.MemberVO;
+import kr.co.poetrypainting.domain.dto.JoinDTO;
+import kr.co.poetrypainting.domain.dto.LoginDTO;
+import kr.co.poetrypainting.service.EmailAuthService;
+import kr.co.poetrypainting.service.MemberService;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.Map;
+
+/**
+ * packageName    : kr.co.poetrypainting.controller
+ * fileName       : MemberController
+ * author         : 방한솔
+ * date           : 2023/04/06
+ * description    : 회원 컨트롤러
+ * ===========================================================
+ * DATE              AUTHOR             NOTE
+ * -----------------------------------------------------------
+ * 2023/04/06        방한솔            최초 생성
+ * 2023/04/07        방한솔            로그인, 로그아웃 기능 추가
+ * 2023/04/13        방한솔            회원가입 추가
+ * 2023/04/14        방한솔            이메일 인증 추가
+ */
+@Controller
+@RequestMapping("/member/*")
+@Data
+@AllArgsConstructor
+@Slf4j
+public class MemberController {
+    private MemberService memberService;
+    private EmailAuthService emailAuthService;
+
+    /**
+     * 로그인 화면 이동
+     *
+     * @return member/login jsp
+     */
+    @GetMapping("/login")
+    public String loginGet(HttpServletRequest request){
+        Cookie[] cookies = request.getCookies();
+
+        /*for(Cookie c : cookies){
+            log.info("{} {}", c.getName(), c.getValue());
+            if(c.getName().equals("memberId")){
+                request.setAttribute("", );
+            }
+        }*/
+
+
+        return "member/login";
+    }
+
+    /**
+     * 회원가입 화면 이동
+     *
+     * @return member/join jsp
+     */
+    @GetMapping("/join")
+    public String joinGet(){
+        return "member/join";
+    }
+
+    /**
+     * post form 요청으로 로그인한다. (세션부여)
+     *
+     * @param loginForm 가입폼
+     * @param request  the request
+     * @param response the response
+     * @return 메인화면으로 리다이렉트
+     */
+    @PostMapping("/login")
+    public String loginPost(LoginDTO loginForm, HttpServletRequest request, HttpServletResponse response){
+        log.info("login Post");
+        log.info("{}", loginForm);
+
+        MemberVO loginMember = memberService.login(loginForm);
+        Cookie idCookie;
+
+        //if(loginForm.getRememberId())
+
+        if(loginMember == null){
+            String errorMsg = "아이디가 없거나 비밀번호가 틀렸습니다";
+            request.setAttribute("errorMsg", errorMsg);
+
+            return "member/login";
+        } else {
+            if(loginForm.getRememberId()){
+                idCookie = new Cookie("memberId", loginForm.getMemberId());
+                // 초 단위, 90일(3개월)
+                idCookie.setMaxAge(90 * 24 * 60 * 60);
+
+
+            } else {
+                idCookie = new Cookie("memberId", null);
+                idCookie.setMaxAge(0);
+            }
+            idCookie.setPath("/");
+            response.addCookie(idCookie);
+
+            request.getSession().setAttribute("loginMember", loginMember);
+        }
+
+        return "redirect:/";
+    }
+
+    /**
+     * 현재 로그인 한 사용자를 로그아웃 한다.(세션삭제)
+     *
+     * @param request the request
+     * @return 메인화면으로 리다이렉트
+     */
+    @GetMapping("/logout")
+    public String logout(HttpServletRequest request){
+        request.getSession().invalidate();
+
+        return "redirect:/";
+    }
+
+    @ResponseBody
+    @PostMapping(value = "/idCheck", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Boolean> idCheck(@RequestBody Map<String, Object> stringMap){
+        String memberId = (String) stringMap.get("memberId");
+        log.info("{}", memberId);
+        Boolean idCheck  = memberService.idCheck(memberId);
+        log.info("{}", idCheck);
+/*
+        Map<String, Object> map = new HashMap<>();
+
+        map.put("result", idCheck);
+
+        ApiResponse<Map<String, Object>> result = ApiResponse
+                .<Map<String, Object>>builder()
+                .resultCode("200")
+                .resultMsg("중복 조회에 성공하였습니다.")
+                .data(map)
+                .build();*/
+
+        return ResponseEntity.ok(idCheck);
+    }
+
+    @ResponseBody
+    @PostMapping(value = "/nickCheck", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Boolean> nickCheck(@RequestBody Map<String, Object> stringMap){
+        String nickname = (String) stringMap.get("nickname");
+        log.info("{}", nickname);
+        Boolean nickCheck  = memberService.nickCheck(nickname);
+        log.info("{}", nickCheck);
+
+        return ResponseEntity.ok(nickCheck);
+    }
+
+    @ResponseBody
+    @PostMapping(value = "/emailSend", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Boolean> emailSend(@RequestBody Map<String, Object> stringMap){
+        String email = (String) stringMap.get("email");
+
+        log.info("email : {}", email);
+        try {
+            emailAuthService.emailSend(email);
+        } catch (UnirestException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(false);
+        }
+
+        return ResponseEntity.ok(true);
+    }
+
+    @ResponseBody
+    @PostMapping(value = "/emailAuthCheck", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Boolean> emailCheck(@RequestBody Map<String, Object> stringMap){
+        String email = (String) stringMap.get("email");
+        String code = (String) stringMap.get("code");
+        log.info("{}", email);
+        Boolean emailAuthCheck  = memberService.emailAuthCheck(email, code);
+        log.info("{}", emailAuthCheck);
+
+        return ResponseEntity.ok(emailAuthCheck);
+    }
+
+    @PostMapping("/join")
+    @ResponseBody
+    public int joinPost(JoinDTO joinForm){
+        log.info("{}", joinForm);
+
+        MemberVO member = new MemberVO();
+        member.setMemberId(joinForm.getMemberId());
+        member.setPassword(joinForm.getPassword());
+        member.setEmail(joinForm.getEmail());
+        member.setNickname(joinForm.getNickname());
+
+        AddressVO address = new AddressVO();
+
+        address.setAddr(joinForm.getAddr());
+        address.setAddrDetail(joinForm.getAddrDetail());
+        address.setX(joinForm.getX());
+        address.setY(joinForm.getY());
+        address.setDong(joinForm.getDong());
+        address.setMainAddr(true);
+
+
+        int register = memberService.register(member, address);
+
+        //return "redirect:/";
+        //return "member/join";
+
+        return register;
+    }
+
+    @GetMapping("passCheck")
+    public String passCheckForm(){
+        return "member/passCheck";
+    }
+
+    @GetMapping("passChange")
+    public String passChangeForm(){
+        return "member/passChange";
+    }
+
+    @GetMapping("modify")
+    public String modifyForm(){
+        return "member/modify";
+    }
+
+    @GetMapping("mypage")
+    public String myPage() {
+        return "member/mypage";
+    }
+}

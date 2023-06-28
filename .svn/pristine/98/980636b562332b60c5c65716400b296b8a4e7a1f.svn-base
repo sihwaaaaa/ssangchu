@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="kr.co.poetrypainting.mapper.TradeMapper">
+  
+  	<select id="getList" resultType="trade">
+  		select * from trade where memberNo = #{memberNo}
+  	</select>
+  	
+  	<select id="getMyList" resultType="trade">
+  		select * from trade where bno= #{bno} and memberNo = #{memberNo}
+  	</select>
+
+	<select id="getProgress" resultType="trade">
+  		select * from trade T join progress P on T.progress = P.pgNo where bno = #{bno} 
+  	</select>
+
+  	<select id="getBuyer" resultType="Long">
+  		select t.memberNo 'buyer' from trade t join board b on t.bno = b.bno where t.bno= #{bno};
+  	</select>
+
+  	<select id="getSeller" resultType="Long">
+  		select b.memberNo 'seller' from trade t join board b on t.bno = b.bno where t.bno= #{bno};
+  	</select>   	  	
+  	
+  	<select id="read" resultType="trade">
+ 		select * from trade where tradeNo = #{tradeNo}
+ 	</select>
+ 	
+ 	<select id="getMyList2" resultType="trade">
+ 		select * from trade where tradeNo = #{tradeNo}
+ 	</select>
+  	
+  	<insert id="insert">
+  		<selectKey keyProperty="tradeNo" order="BEFORE" resultType="Long">
+  			select max(tradeNo)+1 from trade
+  		</selectKey>
+  		insert into trade(tradeNo, memberNo, bno) values (#{tradeNo}, #{memberNo}, #{bno});
+  	</insert>
+  	
+  	<update id="update">
+  		update trade set
+  		progress = #{progress},
+  		updatedate = now()
+  		where tradeNo = #{tradeNo}	  	
+  	</update>	
+  
+  	</mapper>

@@ -1,0 +1,150 @@
+package kr.co.poetrypainting.controller;
+
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.request;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.List;
+
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import kr.co.poetrypainting.domain.BoardVo;
+import kr.co.poetrypainting.domain.MemberVO;
+import kr.co.poetrypainting.mapper.AddressMapper;
+import kr.co.poetrypainting.mapper.BoardMapper;
+import kr.co.poetrypainting.service.BoardService;
+import kr.co.poetrypainting.service.ReplyService;
+import lombok.Data;
+import lombok.extern.log4j.Log4j;
+
+/**
+ * 
+* @packageName    : kr.co.poetrypainting.controller
+* @fileName        : BoardController.java
+* @author        : 이시화
+* @date            : 2023.04.09
+* @description            :
+* ===========================================================
+* DATE              AUTHOR             NOTE
+* -----------------------------------------------------------
+* 2023.04.09        이시화       최초 생성
+ */
+@Controller
+@Log4j
+@RequestMapping("/board/*")
+@Data
+public class BoardController {
+	private final BoardService boardService;
+	private final ReplyService replyService;
+	private final BoardMapper boardMapper;
+	private final AddressMapper addressMapper;
+	
+	/**
+	 * 
+	 * @author : 이시화
+	 * @todo : 글 목록 리스트 출력 
+	 * @param : list<BoardVo>
+	 *
+	 * @date : 2023. 4. 10.
+	 */
+	@GetMapping("/list")
+	public void list(Model model){
+		List<BoardVo> boards = boardService.getList();
+		
+		model.addAttribute("list", boards);
+		
+		
+//			model.addAttribute("addrName",  addressMapper.read(boards.get(i).getAddrNo()));
+			
+		
+
+	}
+	
+	/**
+	 * 
+	 * @author : 이시화
+	 * @todo : 게시글 번호 조회 
+	 * @param : bno
+	 * @return : 
+	 *
+	 * @date : 2023. 4. 11.
+	 */
+	@GetMapping({"/get","/modify"})
+	public void get(Model model, Long bno){
+		model.addAttribute("board",boardService.get(bno));
+	}
+	/**
+	 * 
+	 * @author : 이시화
+	 * @todo : url에서 글번호로만 조회 
+	 * @param : bno
+	 * @return : board/get으로
+	 *
+	 * @date : 2023. 4. 13.
+	 */
+	@GetMapping("{bno}")
+	public String getByPath(Model model, @PathVariable Long bno){
+		log.info(bno);
+		model.addAttribute("board", boardService.get(bno));
+		return "/board/get";
+	}
+	
+	/**
+	 * 
+	 * @author : 이시화
+	 * @todo : 글작성 
+	 * @param : member
+	 * @return : board/write
+	 *
+	 * @date : 2023. 4. 13.
+	 */
+	@GetMapping("/write")
+	public String write(Model model,HttpSession session){
+		MemberVO member = (MemberVO)session.getAttribute("member");
+//		if(request.getSession(false) == null){
+//			log.info("로그인 필요");
+//			return  "redirect:/member/login";
+//		} 
+		
+		model.addAttribute("category",boardService.getCategoryList());
+		model.addAttribute("addr",addressMapper.getMyList(member.getMemberNo()));
+		return "/board/write";
+	}
+	
+	@PostMapping("/write")
+	public String write(BoardVo vo,@SessionAttribute("loginMember")MemberVO member, RedirectAttributes rttr){
+		vo.setMemberNo(member.getMemberNo());
+		log.info(vo);
+		boardService.register(vo);
+		return "redirect:/board/list";
+
+	}
+	
+	@GetMapping("/get2")
+	public void get2(Model model, Long bno){
+		
+		model.addAttribute("board",boardService.get(bno));
+//        ReplyVO replyVO = replyService.getBno(bno);
+		List<ReplyVO> replyVO = replyService.getListBno(bno);
+		model.addAttribute("reply", replyVO);
+		List<ReplyVO> replyVOs = replyService.getAddress(bno);
+		model.addAttribute("reply", replyVOs);
+		List<ReplyVO>memberVOs = replyService.getNickName(bno);
+		model.addAttribute("reply", replyVOs);
+//		model.addAttribute("address", )
+		
+
+	}
+
+}

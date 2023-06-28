@@ -1,0 +1,28 @@
+package kr.co.poetrypainting.service;
+
+import kr.co.poetrypainting.domain.BoardVo;
+
+/**
+ * 
+* @packageName    : kr.co.poetrypainting.service
+* @fileName        : BoardService.java
+* @author        : 이시화
+* @date            : 2023.04.09
+* @description            :
+* ===========================================================
+* DATE              AUTHOR             NOTE
+* -----------------------------------------------------------
+* 2023.04.09        이시화       최초 생성
+ */
+public interface BoardService {
+	/**
+	 * 
+	 * @author : 시화
+	 * @todo : 글 등록 
+	 * @param : BoardVo
+	 * @return : void
+	 *
+	 * @date : 2023. 4. 9.
+	 */
+	void register(BoardVo vo);
+}

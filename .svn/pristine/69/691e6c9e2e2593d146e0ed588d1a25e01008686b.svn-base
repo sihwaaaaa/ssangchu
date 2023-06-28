@@ -1,0 +1,10 @@
+package kr.co.poetrypainting.controller;
+
+/**
+ * 
+ * @author 이시화
+ *
+ */
+public class BoardController {
+
+}

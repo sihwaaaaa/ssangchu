@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.poetrypainting.mapper.CheatMapper">
+
+  <!-- 신고 정보 추가 -->
+  <insert id="insert">
+    INSERT INTO CHEAT (memberNo ,cateNo , chEtc ,bno) VALUES ( #{memberNo}, #{cateNo}, #{chEtc}, #{bno});
+  </insert>
+
+
+ 
+ <!--  신고 정보 조회 -->
+  <select id="selectOne"  resultType="kr.co.poetrypainting.domain.CheatVO">
+   SELECT * FROM CHEAT WHERE chNo  =  #{chNo}
+  </select>
+ 
+ <update id="update">
+ update cheat set
+		chProgress = 1
+		, penaltyNo = #{penaltyNo}
+		, penaltyEtc = #{penaltyEtc}
+		, penaltyDate = now()
+		where chNo = #{chNo};
+ 
+ </update>
+<!--  
+	<resultMap id="cheatFull" type="kr.co.poetrypainting.domain.CheatVO">
+		<result property="bno" column="bno"/>
+		<result property="memberNo" column="memberNo"/>
+		<result property="content" column="content"/>
+		<result property="title" column="title"/>
+		<result property="regdate" column="regdate"/>
+		<result property="updateDate" column="updateDate"/>
+		<result property="uptime" column="uptime"/>
+		<result property="blind" column="blind"/>
+		<result property="cateNo" column="cateNo"/>
+		<result property="price" column="price"/>
+		<result property="addrNo" column="addrNo"/>
+		<result column="cateName" property="cateName" />
+		<result column="nickname" property="memberName" />
+		<result column="dong" property="addrName" />
+		<collection property="attachs" resultMap="attachMap"/>
+	</resultMap>
+	
+	<resultMap type="attach" id="attachMap">
+		<result property="attNo" column="attNo"/>
+		<result property="attUuid" column="attUuid"/>
+		<result property="attPath" column="attPath"/>
+		<result property="attName" column="attName"/>
+		<result property="uuidIdx" column="uuidIdx"/>
+		
+		<result property="bno" column="bno"/>
+	
+	</resultMap> -->
+ 
+ 
+ 
+ 
+ <select id="selectCheat" resultType="kr.co.poetrypainting.domain.CheatVO">
+ 	select  att.*, m.nickname, c.chReport, b.*, ch.* 
+FROM CHEAT ch
+left join attach att on att.bno = ch.bno and att.uuidIdx = 0
+left join `member` m on m.memberNo = ch.memberNo
+left join cheatcategory c on c.cateNo = ch.cateNo 
+left join board b on b.bno = ch.bno
+WHERE chProgress = 0;
+ </select>
+ <select id="selectPenalty" resultType="kr.co.poetrypainting.domain.CheatVO">
+ 	SELECT * FROM CHEAT WHERE chProgress = 1;
+ </select>
+</mapper>

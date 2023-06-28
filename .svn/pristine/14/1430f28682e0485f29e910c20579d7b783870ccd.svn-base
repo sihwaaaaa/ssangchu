@@ -1,0 +1,5 @@
+package kr.co.poetrypainting.mapper;
+
+
+public interface WithdrawalMapper {
+}

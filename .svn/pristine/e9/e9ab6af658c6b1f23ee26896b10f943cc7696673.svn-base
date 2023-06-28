@@ -1,0 +1,23 @@
+package kr.co.poetrypainting.service;
+
+import kr.co.poetrypainting.domain.dto.ChatMessageDTO;
+
+import java.util.List;
+/**
+ * packageName    : kr.co.poetrypainting.service
+ * fileName       : ChatMessageService
+ * author         : 함준혁
+ * date           : 2023/04/12
+ * description    :
+ * ===========================================================
+ * DATE              AUTHOR             NOTE
+ * -----------------------------------------------------------
+ * 2023/04/12        함준혁            최초 생성
+ */
+public interface ChatMessageService {
+    // 채팅 기록 저장
+    int save(ChatMessageDTO vo);
+    // 채팅 내역 조회
+    List<ChatMessageDTO> getList(Long no);
+
+}

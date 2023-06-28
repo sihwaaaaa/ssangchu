@@ -1,0 +1,20 @@
+package kr.co.poetrypainting.domain.dto;
+
+import java.util.Date;
+
+public class CheatDTO {
+	  private Long chNo; // 신고번호
+	  private Long memberNo; // 신고자
+	  private Date chDate; // 신고일
+	  private int chProgress; // 신고 처리 여부
+	  private Long cateNo; // 카테고리번호
+	  private String chPanalty; // 처벌결과
+	  private Long bno; // 신고글번호
+	  private String chEtc; //기타사유
+	  private String chReport; //카테고리분류 (1.판매금지 물품, 2.전문판매업자, 3.사기글, 4.기타)
+	  private PenaltyDTO penaltyDTO; // 처벌정보
+	  private String cateName; // 카테고리명
+	  
+	  // 생성자, getter, setter 메소드 생략
+	  
+}

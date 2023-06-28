@@ -1,0 +1,56 @@
+package kr.co.poetrypainting.service;
+
+import static org.junit.Assert.assertNotNull;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import kr.co.poetrypainting.domain.AddressVO;
+import kr.co.poetrypainting.domain.MemberVO;
+import kr.co.poetrypainting.mapper.MemberMapper;
+import lombok.extern.log4j.Log4j;
+
+/**
+ * packageName    : kr.co.poetrypainting.service
+ * fileName       : AddressServiceTests
+ * author         :	오상현
+ * date           : 2023/04/06
+ * description    : testRegister 성공
+ * ===========================================================
+ * DATE              AUTHOR             NOTE
+ * -----------------------------------------------------------
+ * 2023/04/06        오상현           최초 생성
+ */
+
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration("file:src/main/webapp/WEB-INF/spring/root-context.xml")
+@Log4j
+public class AddressServiceTests {
+	@Autowired
+	private AddressService addressService;
+	
+	@Test
+	public void testExist() {
+		assertNotNull(addressService);
+		log.warn(addressService);
+	}
+	
+	@Test
+	public void testRegister() {
+		AddressVO vo = new AddressVO();
+		vo.setMemberNo(6L);
+		vo.setAddr("서울 구로구 항동 1-1");
+		vo.setAddrDetail("성공회대학교");
+		vo.setY(37.4875235978289);
+		vo.setX(126.826163535057);
+		
+		log.warn(vo);
+		addressService.register(vo);
+		log.warn(vo);	
+		
+	}
+
+}

@@ -1,0 +1,54 @@
+package kr.co.poetrypainting.crawl;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
+/**
+ * @author 함준혁
+ * 당근마켓 상품정보 크롤링
+ * @since 2023-04-06
+ * To do list : 카테고리 정보 가져와야함.
+ */
+public class CarrotParser {
+
+    public static void main(String[] args) throws Exception {
+        // 크롤링할 페이지 URL
+        String url = "https://www.daangn.com/hot_articles";
+
+        // Jsoup을 사용하여 페이지를 가져오기
+        Document doc = Jsoup.connect(url).get();
+
+        // 상품 정보가 있는 요소를 찾기
+        Elements items = doc.select(".cards-wrap .card-top");
+
+        // 각 상품 정보에 대해 반복문 실행
+        for (Element item : items) {
+            // 상품 제목
+            String title = item.select(".card-title").text();
+
+            // 상품 가격
+            String price = item.select(".card-price").text();
+
+            // 상품 위치 ex) 서울 양천구 신월동
+            String location = item.select(".card-region-name").text();
+
+
+            // 찜 갯수
+            String like= item.select("span:first-child").text().replaceAll("[^0-9]","");
+
+            // 이미지
+            String img = item.selectFirst("img").attr("src");
+
+            // 출력
+            System.out.println("Title: " + title);
+            System.out.println("Price: " + price);
+            System.out.println("Location: " + location);
+            System.out.println("Like: " + like);
+            System.out.println("Img: " + img);
+            System.out.println("------------------------");
+        }
+    }
+}
+

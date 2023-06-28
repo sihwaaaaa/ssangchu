@@ -1,0 +1,39 @@
+package kr.co.poetrypainting.service;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import kr.co.poetrypainting.domain.BoardVo;
+import kr.co.poetrypainting.mapper.BoardMapper;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import lombok.extern.log4j.Log4j;
+/**
+ * 
+* @packageName    : kr.co.poetrypainting.service
+* @fileName        : BoardServiceImpl.java
+* @author        : 이시화
+* @date            : 2023.04.09
+* @description            :
+* ===========================================================
+* DATE              AUTHOR             NOTE
+* -----------------------------------------------------------
+* 2023.04.09        이시화       최초 생성
+ */
+@Service
+@AllArgsConstructor
+@NoArgsConstructor
+@Log4j
+public class BoardServiceImpl implements BoardService{
+	
+	@Autowired
+	private BoardMapper boardMapper;
+	
+	/**
+	 * 글 작성
+	 */
+	@Override
+	public void register(BoardVo vo) {
+		boardMapper.insert(vo);
+	}
+}

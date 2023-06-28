@@ -1,0 +1,15 @@
+package kr.co.poetrypainting.domain.dto;
+
+import lombok.Data;
+
+@Data
+public class AttachDTO {
+	private Long attNo;
+	private String attUuid;
+	private String attOrigin;
+	private String attName;
+	private String attPath;
+	
+	private Long bno;
+	private int uuidIdx;
+}

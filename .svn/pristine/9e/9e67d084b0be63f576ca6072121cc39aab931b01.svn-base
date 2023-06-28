@@ -1,0 +1,10 @@
+package kr.co.poetrypainting.domain;
+/**
+ * 
+ * @author 이영미
+ * 2023-04-05
+ * board vo 최초 생성
+ */
+public class BoardVo {
+	
+}

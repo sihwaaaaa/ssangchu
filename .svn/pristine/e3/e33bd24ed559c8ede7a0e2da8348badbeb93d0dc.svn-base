@@ -1,0 +1,21 @@
+package kr.co.poetrypainting.domain.dto;
+
+import kr.co.poetrypainting.domain.BoardVo;
+import lombok.Data;
+/**
+ * packageName    : kr.co.poetrypainting.domain.dto
+ * fileName       : ChatRoomDTO
+ * author         : 함준혁
+ * date           : 2023/04/12
+ * description    : 채팅방DTO
+ * ===========================================================
+ * DATE              AUTHOR             NOTE
+ * -----------------------------------------------------------
+ * 2023/04/12        함준혁       최초 생성
+ */
+@Data
+public class ChatRoomDTO {
+    private Long no; // 채팅방 번호
+    private String name; // 채팅방 이름
+    private BoardVo board_no; // 게시글 번호
+}

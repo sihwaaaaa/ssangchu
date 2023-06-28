@@ -1,0 +1,128 @@
+<%--
+  Created by IntelliJ IDEA.
+  User: banghansol
+  Date: 2023/04/17
+  Time: 4:52 PM
+  To change this template use File | Settings | File Templates.
+--%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <jsp:include page="/WEB-INF/views/includes/head.jsp"/>
+</head>
+<body>
+  <jsp:include page="/WEB-INF/views/includes/header.jsp"/>
+  <section class="section-margin">
+    <div class="container">
+      <%--
+      <div class="card my-4">
+        <div class="card-body row">
+          <div class="col-md-3 d-flex flex-column align-items-center border">
+            <i class="fas fa-camera h1"></i>
+            <div>함상점</div>
+            <div>청상추</div>
+            <button class="btn btn-primary">내 상점 관리</button>
+          </div>
+          <div class="col-md-9 d-flex flex-row">
+            <div class="col-md-12 row">
+              <div class="col-sm-6">
+                <div class="row">
+                  <div class="form-group col-md-9">
+                    <input class="form-control" type="text" id="shopName" name="shopName" placeholder="상점 이름을 입력해주세요!">
+                  </div>
+                  <div class="form-group col-md-3">
+                    <button class="btn btn-primary">수정</button>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-6 flex-column">
+                  <button class="btn btn-warning mx-2">내 정보 수정</button>
+                  <button class="btn btn-primary mx-2">내 주소록 관리</button>
+              </div>
+              <div class="col-md-12 card my-2 p-3">
+                test1
+              </div>
+              <div class="col-md-12 card my-2 h-400">
+                test2
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+      --%>
+
+        <div class="card">
+          <div class="card-body row">
+
+            <div class="col-lg-3">
+              <div class="blog_right_sidebar small h-100 rounded">
+                <div class="single_sidebar_widget author_widget">
+                  <img class="author_img rounded-circle" src="img/salad.png" alt="">
+                  <h4 class="m-0">함상점</h4>
+                  <p class="mb-3">등급 : 청상추</p>
+                  <button type="button" class="btn btn-success">구독</button>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-9 pl-0">
+              <div class="d-flex justify-content-between">
+                <div class="blog_right_sidebar d-inline card p-0">
+                  <div class="single_sidebar_widget author_widget card-body p-2">
+                    <p>함상점</p>
+                  </div>
+                </div>
+                <div class="p-0 d-flex">
+                  <a class="button button--active px-2 py-1 mr-2" href="/member/modify">내 정보 수정</a>
+                  <a class="button button--active px-2 py-1 mr-2" href="/member/modify">내 주소록 관리</a>
+                  <div class="blog_right_sidebar d-inline card p-0">
+                    <div class="single_sidebar_widget author_widget card-body px-3 py-2">
+                      <p>서울시 양천구 신월동 월정로 262</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="blog_right_sidebar px-3 py-1 my-2 card">
+                <ul class="d-flex card-body p-0">
+                  <li class="p-2">○ 상점오픈일 : 1957일</li>
+                  <li class="p-2">○ 상점방문수 : 1024명</li>
+                  <li class="p-2">○ 상품판매 : 512회</li>
+                </ul>
+              </div>
+              <div class="blog_right_sidebar">
+                <div class="d-flex single_sidebar_widget author_widget">
+                  <p>함준혁의 상점입니다. 신뢰를 바탕으로 거래합니다</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      <div class="card  my-4">
+        <div class="card-body">
+          <nav>
+            <div class="nav nav-tabs" id="nav-tab" role="tablist">
+              <button class="nav-link active" id="nav-boardlist-tab" data-toggle="tab" data-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">상품목록</button>
+              <button class="nav-link" id="nav-profile-tab" data-toggle="tab" data-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">후기목록</button>
+              <button class="nav-link" id="nav-myreply-tab" data-toggle="tab" data-target="#nav-myreply" type="button" role="tab" aria-controls="nav-contact" aria-selected="false">내가 쓴 후기</button>
+              <button class="nav-link" id="nav-mytrade-tab" data-toggle="tab" data-target="#nav-mytrade" type="button" role="tab" aria-controls="nav-contact" aria-selected="false">내 요청</button>
+              <button class="nav-link" id="nav-applytrade-tab" data-toggle="tab" data-target="#nav-applytrade" type="button" role="tab" aria-controls="nav-contact" aria-selected="false">받은 요청</button>
+            </div>
+          </nav>
+          <div class="tab-content" id="nav-tabContent">
+            <div class="tab-pane fade show active" id="nav-boardlist" role="tabpanel" aria-labelledby="nav-home-tab">상품목록</div>
+            <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">후기목록</div>
+            <div class="tab-pane fade" id="nav-myreply" role="tabpanel" aria-labelledby="nav-contact-tab">내가 쓴 후기</div>
+            <div class="tab-pane fade" id="nav-mytrade" role="tabpanel" aria-labelledby="nav-contact-tab">내 요청</div>
+            <div class="tab-pane fade" id="nav-applytrade" role="tabpanel" aria-labelledby="nav-contact-tab">받은 요청</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <jsp:include page="/WEB-INF/views/includes/footer.jsp"/>
+</body>
+</html>

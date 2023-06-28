@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.poetrypainting.mapper.BoardMapper">
+	<select id="getList" resultType="board">
+		
+		select * from board where bno > 0
+	</select>
+  	<insert id="insert">
+  		insert into board (title, content, price, memberNo, cateNo, addrNo ) values (#{title}, #{content}, #{price}, #{memberNo}, #{cateNo}, #{addrNo})
+  	</insert>
+  	<delete id="delete">
+  		delete from board where bno = #{bno} 
+  	</delete>
+  	<select id="read" resultType="board">
+  		select * from board where bno = #{bno}
+  	</select>
+  	
+  	<update id="update">
+  		update board set 
+  			title = #{title}
+  			, content = #{content}
+  			, price = #{price}
+  			, cateNo = #{cateNo}
+  			, updateDate = now()
+  			where bno = #{bno}
+  	
+  	</update>
+  	
+  	<select id="readByMember" resultType="long">
+  		select memberNo from board where bno = #{bno}
+  	</select>
+  		
+  	<select id="getCategory" resultType="category">
+  		select * from category where cateNo > 0
+  	</select>
+  	
+  	<select id="getCategoryName" resultType="String">
+  		select distinct c.cateName from board b right join category c  on b.cateNo = c.cateNo where c.cateNo = #{cateNo}
+  	</select>
+  	<select id="getMemberName" resultType="String">
+  		select distinct m.nickname from board b right join `member` m  on b.memberNo = m.memberNo  where m.memberNo = #{memberNo}
+  	</select>
+  	<select id="getAddrName" resultType="String">
+  		select distinct a.dong from board b right join address a  on b.addrNo = a.addrNo  where a.addrNo  = #{addrNo} 
+  	</select>
+  	
+  	<select id="getListWhitName" resultType="map">
+  		
+  	</select>
+</mapper>

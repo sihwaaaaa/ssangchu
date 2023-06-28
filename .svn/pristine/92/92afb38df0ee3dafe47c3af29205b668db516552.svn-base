@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.poetrypainting.mapper.BoardMapper">
+	<select id="getList" resultType="board">
+
+		select * from board where bno >
+		0
+	</select>
+	<insert id="insert">
+		insert into board (title, content, price, memberNo,
+		cateNo, addrNo ) values
+		(#{title}, #{content}, #{price}, #{memberNo},
+		#{cateNo}, #{addrNo})
+	</insert>
+	<delete id="delete">
+		delete from board where bno = #{bno}
+	</delete>
+	<select id="read" resultType="board">
+		select * from board where bno =
+		#{bno}
+	</select>
+
+	<update id="update">
+		update board set
+		title = #{title}
+		, content =
+		#{content}
+		, price = #{price}
+		, cateNo = #{cateNo}
+		, updateDate = now()
+		where bno = #{bno}
+
+	</update>
+
+	<select id="readByMember" resultType="long">
+		select memberNo from board
+		where bno = #{bno}
+	</select>
+
+	<select id="getCategory" resultType="category">
+		select * from category where
+		cateNo > 0
+	</select>
+
+
+	<resultMap id="boardFull" type="Map">
+
+		<result column="cateName" property="cateName" />
+		<result column="nickname" property="memberName" />
+		<result column="dong" property="addrName" />
+	</resultMap>
+
+	<select id="getListWithName" resultMap="boardFull">
+		select c.cateName,
+		m.nickname, a.dong, b.*
+		from board b
+		left outer join category c on
+		b.cateNo = c.cateNo
+		left outer join member m on b.memberNo = m.memberNo
+		left outer join address a on b.addrNo = a.addrNo
+		where b.bno > 0
+		order
+		by bno desc
+		limit #{amount} offset #{offset}
+	</select>
+	<select id="getListWithAddr" resultMap="boardFull">
+		select c.cateName, m.nickname, a.dong , b.*
+		from board b
+		left outer join category c on b.cateNo = c.cateNo
+		left outer join member m on b.memberNo = m.memberNo
+		left outer join address a on b.addrNo = a.addrNo
+		where a.dong =
+		(select a.dong from address a
+		where a.mainAddr = 1 and a.memberNo = #{member.memberNo})
+		order by bno desc
+		limit #{criteria.amount} offset #{criteria.offset}
+	</select>
+
+	<select id="getTotalCnt" resultType="int">
+		SELECT COUNT(*)
+		FROM BOARD
+		WHERE bno > 0
+	</select>
+
+	<select id="getTotalCntSearch" resultType="int">
+		SELECT COUNT(*)
+		from
+		board b
+		left outer join category c on b.cateNo = c.cateNo
+		left outer
+		join member m on b.memberNo = m.memberNo
+		left outer join address a on
+		b.addrNo = a.addrNo
+		where c.cateName Like CONCAT('%', #{keyword}, '%')
+		OR b.content like CONCAT('%', #{keyword}, '%')OR b.title like
+		CONCAT('%', #{keyword}, '%')OR m.nickname like CONCAT('%', #{keyword},
+		'%')OR a.dong like CONCAT('%', #{keyword}, '%')
+	</select>
+
+	<select id="getListWithKeyword" resultMap="boardFull">
+		select c.cateName,
+		m.nickname, a.dong, b.*
+		from board b
+		left outer join category c on
+		b.cateNo = c.cateNo
+		left outer join member m on b.memberNo = m.memberNo
+		left outer join address a on b.addrNo = a.addrNo
+		where c.cateName Like
+		CONCAT('%', #{keyword}, '%') OR b.content like CONCAT('%', #{keyword},
+		'%')OR b.title like CONCAT('%', #{keyword}, '%')OR m.nickname like
+		CONCAT('%', #{keyword}, '%')OR a.dong like CONCAT('%', #{keyword},
+		'%')
+		order by bno desc
+		limit #{amount} offset #{offset}
+	</select>
+
+	<select id="getAddrCnt" resultType="int">
+		select count(*)
+		from board b
+		left outer join member m on b.memberNo = m.memberNo
+		left outer join address a on b.addrNo = a.addrNo
+		where a.dong =
+		(select a.dong from address a
+		where a.mainAddr = 1 and a.memberNo = #{memberNo});
+	</select>
+
+	<select id="getListCate" resultMap="boardFull">
+		select
+			c.cateName,
+			m.nickname,
+			a.dong ,
+			b.*
+		from board b
+		left outer join category c on b.cateNo = c.cateNo
+		left outer join member m on b.memberNo = m.memberNo
+		left outer join address a on b.addrNo = a.addrNo
+		where
+			b.cateNo = #{cateNo}
+		and a.dong =
+	  				(select a.dong from address a 
+					where a.mainAddr = 1 and a.memberNo = #{member.memberNo})
+		order by bno desc
+		limit #{criteria.amount} offset #{criteria.offset}
+		
+
+	</select>
+	<select id="getCateCnt" resultType="int">
+		select
+			count(*)
+		from
+			board b
+		left outer join category c on
+			b.cateNo = c.cateNo
+		left outer join member m on
+			b.memberNo = m.memberNo
+		left outer join address a on
+			b.addrNo = a.addrNo
+		where
+			b.cateNo = #{cateNo} and a.dong =
+			  (select a.dong from address a 
+			where a.mainAddr = 1 and a.memberNo = #{member.memberNo} )
+	</select>
+	
+</mapper>

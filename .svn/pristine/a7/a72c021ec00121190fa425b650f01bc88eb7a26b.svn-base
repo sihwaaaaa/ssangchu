@@ -1,0 +1,68 @@
+package kr.co.poetrypainting.controller;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import kr.co.poetrypainting.domain.CheatVO;
+import kr.co.poetrypainting.service.CheatService;
+
+@Controller
+@RequestMapping("/cheat")
+public class CheatController {
+/*
+  @Autowired
+  private CheatService cheatService;
+
+  // 신고 페이지
+  @GetMapping("/report")
+  public String report(Model model) throws Exception {
+    // 카테고리 정보 전달
+    model.addAttribute("category", cheatService.selectAllCheatCategories());
+    return "cheat/report";
+  }
+
+  // 신고 처리
+  @PostMapping("/process")
+  public String process(CheatVO CheatVO, RedirectAttributes redirectAttributes) throws Exception {
+    // 신고 정보 저장
+    cheatService.insertCheat(CheatVO);
+    redirectAttributes.addFlashAttribute("message", "신고가 접수되었습니다.");
+    return "redirect:/cheat/report";
+  }
+
+  // 신고 목록
+  @GetMapping("/list")
+  public String list(Model model) throws Exception {
+    // 신고 목록 전달
+    List<CheatVO> cheatList = cheatService.selectAllCheats();
+    model.addAttribute("cheatList", cheatList);
+    return "cheat/list";
+  }
+
+  // 신고 상세정보
+  @GetMapping("/detail/{chNo}")
+  public String detail(@PathVariable Long chNo, Model model) throws Exception {
+    // 신고 정보 전달
+    CheatVO CheatVO = cheatService.selectCheat(chNo);
+    model.addAttribute("CheatVO", CheatVO);
+    return "cheat/detail";
+  }
+
+  // 신고 삭제
+  @PostMapping("/delete/{chNo}")
+  public String delete(@PathVariable Long chNo, RedirectAttributes redirectAttributes) throws Exception {
+    // 신고 정보 삭제
+    cheatService.deleteCheat(chNo);
+    redirectAttributes.addFlashAttribute("message", "신고가 삭제되었습니다.");
+    return "redirect:/cheat/list";
+  }
+*/
+}

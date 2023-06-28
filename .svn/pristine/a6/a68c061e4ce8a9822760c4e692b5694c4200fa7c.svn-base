@@ -1,0 +1,84 @@
+package kr.co.poetrypainting.mapper;
+
+import kr.co.poetrypainting.domain.MemberVO;
+import lombok.AllArgsConstructor;
+import lombok.extern.log4j.Log4j;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import java.util.List;
+
+import static org.junit.Assert.*;
+
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration("file:src/main/webapp/WEB-INF/spring/root-context.xml")
+@Log4j
+public class MemberMapperTests {
+    @Autowired
+    private MemberMapper memberMapper;
+
+    @Test
+    public void testExist(){
+        assertNotNull(memberMapper);
+    }
+
+    @Test
+    public void testInsert(){
+        MemberVO vo = MemberVO.builder()
+                .memberId("test2")
+                .password("12345678")
+                .nickname("테스트계정12")
+                .email("test1@test.com")
+                .build();
+
+        int result = memberMapper.insert(vo);
+
+        assertEquals(1, result);
+    }
+
+    @Test
+    public void testGet() {
+        MemberVO memberVO = memberMapper.get(1L);
+        log.info(memberVO);
+    }
+
+    @Test
+    public void testGetByMemberId() {
+        MemberVO memberVO = memberMapper.getByMemberId("test3");
+        log.info(memberVO);
+    }
+
+    @Test
+    public void testGetByNickname() {
+        MemberVO memberVO = memberMapper.getByNickname("테스트계정1");
+        log.info(memberVO);
+    }
+
+    @Test
+    public void testGetList() {
+        List<MemberVO> list = memberMapper.getList();
+        list.forEach(log::info);
+    }
+
+    @Test
+    public void testUpdate(){
+        MemberVO vo = MemberVO.builder()
+                .memberNo(1L)
+                .nickname("수정닉네임123")
+                .build();
+
+        int result = memberMapper.update(vo);
+
+        assertEquals(1, result);
+    }
+
+    @Test
+    public void testDelete(){
+        int result = memberMapper.delete(1L);
+
+        assertEquals(1, result);
+    }
+}

@@ -1,0 +1,185 @@
+<%@page import="java.util.Date"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+         pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>     
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <jsp:include page="../includes/head.jsp"/>
+
+</head>
+<body>
+  <jsp:include page="../includes/header.jsp"/>
+  <!-- ================ start banner area ================= -->
+	<section class="blog-banner-area" id="category">
+		<div class="container h-100">
+			<div class="blog-banner">
+				<div class="text-center">
+					<h1>신고 접수 목록</h1>
+					<nav aria-label="breadcrumb" class="banner-breadcrumb">
+						<ol class="breadcrumb">
+							<li class="breadcrumb-item"><a href="${pageContext.request.contextPath}/cheat/penaltyList">-신고 처리완료 목록 가기</a></li>
+							
+						</ol>
+					</nav>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- ================ end banner area ================= -->
+
+
+	<!--================Product Description Area =================-->
+	<section class="product_description_area">
+		<div class="container">
+			<h2 style="font-size: 20px; font-weight: 600; margin-bottom: 25px">접수 목록</h2>
+			${cheatList}
+			<c:forEach items="${cheatList}" var="cheat">
+				<c:forEach items="${cheat.attachs}" var="attach">
+					<div class="mt-5">
+						<div class="container" style="border-bottom: 1px solid #eee;" >
+							<div class="d-flex" style="border-bottom: 1px solid #eee;">
+								<fmt:formatDate var="cheatDate" value="${cheat.chDate}" pattern="yyyy.MM.dd HH:mm:ss"/>
+								<h6 class="m-3" style="font-size: 15px;">신고번호 : ${cheat.chNo}</h6>
+								<h6 class="my-3 ml-auto" style="font-size: 15px;">${cheatDate}</h6>
+							</div>
+							<div>
+							
+							<a href="${pageContext.request.contextPath}/board/${cheat.bno}">
+								<c:if test="${attach.attNo == null}">
+									<img class="card-img" src="${pageContext.request.contextPath}/resources/img/no-image-small.png" alt="">
+								</c:if>
+								<c:if test="${attach.attNo != null}">
+									<img class="card-img" src="${pageContext.request.contextPath}/displaySmall${attach.url}" alt="">
+								</c:if>
+							</a>
+							</div>
+							<div>
+							
+								<h6 class="m-3">신고 유저명 : ${cheat.memberNo}</h6>
+								<h6 class="m-3">신고 분류 : ${cheat.cateNo}</h6>
+								<div class="d-flex m-3">
+									<h6>신고 사유 : </h6>
+									<div class="tab-content mx-3" style="border: 1px solid #ccc; min-height: 80px; width: 940px">
+									<c:if test="${cheat.chEtc == null}">
+										<h6>내용이 없습니다</h6>
+									
+									</c:if>
+									<c:if test="${cheat.chEtc != null}">
+									
+										<h6>${cheat.chEtc}</h6>
+									</c:if>
+									</div>
+								</div>
+								<div class="container">
+								<div class="d-felx" style="text-align: center;">
+									<button type="button" style="font-size: 18px" id="" class="button button--active px-4 py-2 m-4">신고승인</button>
+									<button type="button" style="font-size: 18px" id="" class="button button--active px-4 py-2 m-4">반려</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				</c:forEach>
+			</c:forEach>	
+		</div>
+		</section>
+	<!-- remove Modal -->
+<div class="modal fade" id="remove-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+  <div class="modal-dialog" style="margin-top: 300px; min-height: 300px; min-width: 600px " role="document">
+    <div class="modal-content" >
+      <div class="modal-header">
+        <h3 class="modal-title ml-4 my-2" id="exampleModalLongTitle">게시글 삭제</h3>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <c:if test="${pg.progress ne '3'}">
+      <div class="modal-body ml-4 my-2">
+      	<h4>게시글을 정말 삭제하시겠습니까?</h4>
+      	<h6 style="font-size: 15px; color: #ff8c60;">*삭제시 되돌릴 수 없습니다</h6>
+        
+      </div>
+      <div class="modal-footer">
+     
+      <form method="post">
+        <button formaction="${pageContext.request.contextPath}/board/remove" class="button button--active btn-remove px-4 py-2">삭제</button>
+        <button type="button" class="button button--active px-4 py-2" data-dismiss="modal">닫기</button>
+        <input type="hidden" name="bno" value="${bno}">
+     </form>
+      </div>
+      </c:if>
+      <c:if test="${pg.progress eq '3'}">
+      <div class="modal-body ml-4 my-2">
+      	<h4 style="color: #ff8c60;">판매완료된 게시글은 삭제할 수 없습니다</h4>
+      	<h6 style="font-size: 15px; ">수정에서 비공개처리를 한다면 글을 보여주지 않을수 있어요</h6>
+        
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="button button--active px-4 py-2" data-dismiss="modal">닫기</button>
+      </div>
+      </c:if>
+    </div>
+  </div>
+</div>
+
+
+
+	<!-- uptime Modal -->
+<div class="modal fade" id="uptime-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+  <div class="modal-dialog" style="margin-top: 300px; min-height: 300px; min-width: 600px " role="document">
+    <div class="modal-content" >
+      <div class="modal-header">
+        <h3 class="modal-title ml-4 my-2" id="exampleModalLongTitle">게시글 끌어올리기</h3>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+ 	<c:choose>
+
+    <c:when test="${uptime > week}">오케이</c:when>
+
+    <c:otherwise>안돼</c:otherwise>
+
+	</c:choose>
+      <div class="modal-body ml-4 my-2">
+      	<h4>게시글을 끌어 올리시겠습니까?</h4>
+      	<h6 style="font-size: 15px; color: #ff8c60;">*일주일마다 끌어올리기가 가능합니다</h6>
+        
+      </div>
+      <div class="modal-footer">
+     
+      <form method="post">
+        <button formaction="${pageContext.request.contextPath}/board/uptime" class="button button--active px-4 py-2">끌어올리기</button>
+        <button type="button" class="button button--active px-4 py-2" data-dismiss="modal">취소</button>
+        <input type="hidden" name="bno" value="${bno}">
+     </form>
+ 
+      </div>
+    </div>
+  </div>
+</div>
+    
+	<!--================ end related Product area =================-->  	
+
+<script>
+	var cp = '${pageContext.request.contextPath}'
+</script> 
+<jsp:include page="../includes/footer.jsp"/>
+<script>
+$(function() {
+	$("#remove").click(function () {
+		$('#remove-modal').modal('show')
+			
+	
+	})
+	$("#uptime").click(function () {
+		$('#uptime-modal').modal('show')
+	})
+})
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,11 @@
+package kr.co.poetrypainting.service;
+
+import kr.co.poetrypainting.domain.MemberVO;
+
+public interface MemberService {
+    int register(MemberVO memberVO);
+
+    MemberVO get();
+
+    MemberVO getList();
+}

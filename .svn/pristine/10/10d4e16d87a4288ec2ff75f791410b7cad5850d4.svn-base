@@ -1,0 +1,74 @@
+package kr.co.poetrypainting.service;
+
+import java.util.List;
+
+import kr.co.poetrypainting.domain.BoardVo;
+
+/**
+ * 
+* @packageName    : kr.co.poetrypainting.service
+* @fileName        : BoardService.java
+* @author        : 이시화
+* @date            : 2023.04.09
+* @description            :
+* ===========================================================
+* DATE              AUTHOR             NOTE
+* -----------------------------------------------------------
+* 2023.04.09        이시화       최초 생성
+ */
+public interface BoardService {
+	/**
+	 * 
+	 * @author : 이시화
+	 * @todo : 글 등록 
+	 * @param : BoardVo
+	 * @return : void
+	 *
+	 * @date : 2023. 4. 9.
+	 */
+	void register(BoardVo vo);
+	
+	/**
+	 * 
+	 * @author : 이시화
+	 * @todo : 글 단일 조회
+	 * @param : bno
+	 * @return : BoardVo
+	 *
+	 * @date : 2023. 4. 10.
+	 */
+	BoardVo get(Long bno);
+	
+	/**
+	 * 
+	 * @author : 이시화
+	 * @todo : 글 수정 
+	 * @param : BoardVo
+	 * @return : Long (수정된 글 번호)
+	 *
+	 * @date : 2023. 4. 10.
+	 */
+	Long modify(BoardVo vo);
+	
+	/**
+	 * 
+	 * @author : 이시화
+	 * @todo : 글 삭제 
+	 * @param : bno
+	 * @return : void
+	 *
+	 * @date : 2023. 4. 10.
+	 */
+	void remove(Long bno);
+	
+	/**
+	 * 
+	 * @author : 이시화
+	 * @todo : 글 목록 조회 
+	 * @param :
+	 * @return : List<BoardVo> 
+	 *
+	 * @date : 2023. 4. 10.
+	 */
+	List<BoardVo> getList();
+}

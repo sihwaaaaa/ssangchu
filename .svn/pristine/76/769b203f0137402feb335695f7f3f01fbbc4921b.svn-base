@@ -1,0 +1,13 @@
+package kr.co.poetrypainting.mapper;
+
+import kr.co.poetrypainting.domain.ShopVO;
+
+/**
+ * @author 함준혁
+ * ShopMapper
+ * @since 2023-04-05
+ */
+public interface ShopMapper {
+    int updateName(ShopVO vo); //상점명 수정
+    int updateIntro(ShopVO vo); //상점소개 수정
+}

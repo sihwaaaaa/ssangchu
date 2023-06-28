@@ -1,0 +1,74 @@
+package kr.co.poetrypainting.mapper;
+
+import java.util.List;
+
+import kr.co.poetrypainting.domain.BoardVo;
+
+/**
+ * 
+* @packageName    : kr.co.poetrypainting.mapper
+* @fileName        : BoardMapper.java
+* @author        : 이시화
+* @date            : 2023.04.09
+* @description            :
+* ===========================================================
+* DATE              AUTHOR             NOTE
+* -----------------------------------------------------------
+* 2023.04.09        이시화       최초 생성
+ */
+public interface BoardMapper {
+	
+	/**
+	 * 
+	 * @author : 이시화
+	 * @todo : 통합 리스트 조회
+	 * @return : BoardVo타입의 리스트 반환 
+	 *
+	 * @date : 2023. 4. 9.
+	 */
+	List<BoardVo> getList();
+	
+	/**
+	 * 
+	 * @author : 이시화
+	 * @todo : 글 작성
+	 * @param : BoardVo
+	 * @return : void
+	 *
+	 * @date : 2023. 4. 9.
+	 */
+	void insert(BoardVo vo);
+	
+	/**
+	 * 
+	 * @author : 이시화
+	 * @todo : 글 삭제 
+	 * @param : bno
+	 *
+	 * @date : 2023. 4. 9.
+	 * 
+	 */
+	void delete(Long bno);
+	
+	/**
+	 * 
+	 * @author : 이시화
+	 * @todo : 글 단일 조회 
+	 * @param :bno
+	 * @return : 조회할 게시글
+	 *
+	 * @date : 2023. 4. 9.
+	 */
+	BoardVo read(Long bno);
+	
+	/**
+	 * 
+	 * @author : 이시화
+	 * @todo : 글 수정 
+	 * @param : BoardVo
+	 * @return : 수정된 글 번호
+	 *
+	 * @date : 2023. 4. 9.
+	 */
+	Long update(BoardVo vo);
+}

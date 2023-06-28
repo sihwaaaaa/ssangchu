@@ -1,0 +1,43 @@
+package kr.co.poetrypainting.domain;
+
+import static java.time.LocalTime.now;
+
+/**
+ * @author 함준혁
+ * 상점페이지
+ * @since 2023-04-05
+ */
+public class ShopVO {
+    /*
+    상점페이지에서 필요한 것들 목록 ( * 되어 있는것들은 이곳에서 구현, 그 외의 것들은 참조 )
+    shop_no *
+    member_id - member 참조
+    shop_name *
+    regdate - 조회일 - member_regdate
+    visits *
+    progress - trade 참조
+    addr - address 참조
+    reportcnt - cheat 참조
+    credit - member 참조
+    main_addr - address 참조
+    introduction *
+     */
+    private Long no; // 상점번호
+    private String id; //회원 id
+    private String name; // 상점명
+    private String opendate; // 상점오픈일
+    private Long visits; // 상점방문수
+    private Long sell_no; // 판매수
+    private int reportcnt; // 신고누적수
+    private int credit; // 신용점수
+    private String addr; // 주소
+    private boolean main_addr; //대표주소값
+    private String intro; // 상점소개 ( introduction )
+
+
+
+
+
+
+
+}

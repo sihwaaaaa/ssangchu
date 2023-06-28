@@ -1,0 +1,19 @@
+package kr.co.poetrypainting.controller;
+
+
+
+import org.springframework.web.bind.annotation.*;
+/**
+ * @author 함준혁
+ * 상추쪽지
+ * 채팅방컨트롤러
+ * @since 2023-04-11
+ */
+@RestController
+public class ChatController {
+
+    public String showMessagePage() {
+        return "chat"; // "message.jsp"와 같은 뷰 페이지를 반환
+    }
+
+}

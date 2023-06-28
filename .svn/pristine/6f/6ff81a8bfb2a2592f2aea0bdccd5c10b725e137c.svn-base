@@ -1,0 +1,17 @@
+package kr.co.poetrypainting.mapper;
+
+import kr.co.poetrypainting.domain.MemberVO;
+
+import java.util.List;
+
+public interface MemberMapper {
+    int insert(MemberVO memberVO);
+
+    MemberVO get(Long memberNo);
+
+    List<MemberVO> getList();
+
+    //int update(MemberVO vo);
+
+    //int delete(Long memberNo);
+}

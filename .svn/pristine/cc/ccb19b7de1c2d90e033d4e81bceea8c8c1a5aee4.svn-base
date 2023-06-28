@@ -1,0 +1,40 @@
+package kr.co.poetrypainting.mapper;
+
+import java.util.List;
+
+import kr.co.poetrypainting.domain.ReplyVO;
+
+/**
+ * packageName    : kr.co.poetrypainting.mapper
+ * fileName       : ReplyMapper
+ * author         :	오상현
+ * date           : 2023/04/11
+ * description    : ReplyMapper  
+ * ===========================================================
+ * DATE              AUTHOR             NOTE
+ * -----------------------------------------------------------
+ * 2023/04/11        오상현           후기 CRUD 생성
+ * 
+ * 
+ * 
+ */
+
+public interface ReplyMapper {
+	// 후기작성
+	int insert(ReplyVO vo);
+	
+	// 후기 개별 확인
+	ReplyVO read(Long rno);
+	
+	// 회원이 쓴 전체 후기 조회
+	List<ReplyVO> getList(Long memberNo);
+	
+	// 후기 수정
+	int update(ReplyVO vo);
+	
+	//후기 삭제
+	int delete(Long rno);
+	
+	//글 삭제시 후기 삭제
+	int deleteByBno(Long bno);
+}

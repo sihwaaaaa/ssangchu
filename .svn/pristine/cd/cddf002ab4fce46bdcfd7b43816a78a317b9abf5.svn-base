@@ -1,0 +1,25 @@
+package kr.co.poetrypainting.controller;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import lombok.extern.log4j.Log4j;
+
+/**
+ * 
+* @packageName    : kr.co.poetrypainting.controller
+* @fileName        : BoardController.java
+* @author        : 이시화
+* @date            : 2023.04.09
+* @description            :
+* ===========================================================
+* DATE              AUTHOR             NOTE
+* -----------------------------------------------------------
+* 2023.04.09        이시화       최초 생성
+ */
+@Controller
+@Log4j
+@RequestMapping("/board/*")
+public class BoardController {
+
+}

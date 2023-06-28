@@ -1,0 +1,59 @@
+package kr.co.poetrypainting.mapper;
+
+import kr.co.poetrypainting.domain.MemberVO;
+import lombok.AllArgsConstructor;
+import lombok.extern.log4j.Log4j;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import static org.junit.Assert.*;
+
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration("file:src/main/webapp/WEB-INF/spring/root-context.xml")
+@Log4j
+public class MemberMapperTests {
+    @Autowired
+    private MemberMapper memberMapper;
+
+    @Test
+    public void testExist(){
+        assertNotNull(memberMapper);
+    }
+
+    @Test
+    public void testInsert(){
+        MemberVO vo = MemberVO.builder()
+                .memberId("test1")
+                .password("12345678")
+                .nickname("테스트계정1")
+                .email("test1@test.com")
+                .build();
+
+        int result = memberMapper.insert(vo);
+
+        assertTrue(result > 0);
+    }
+
+    @Test
+    public void testGet() {
+
+    }
+
+    @Test
+    public void testGetList() {
+
+    }
+
+    @Test
+    public void testUpdate(){
+
+    }
+
+    @Test
+    public void testDelete(){
+
+    }
+}

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  
+  <!-- since 2023/04/06 생성 조회 삭제기능 -->
+  
+  
+<mapper namespace="kr.co.poetrypainting.mapper.AddressMapper">
+
+ 	<select id="getList" resultType="address">
+ 		select * from address where addrNo > 0
+ 	</select>
+ 	
+ 	<select id="read" resultType="address">
+ 		select * from address where addrNo = #{addrNo}
+ 	</select>
+
+    <insert id="insert">
+        insert into address(memberNo, addr, addrDetail, y, x) values          
+            (#{memberNo}, #{addr}, #{addrDetail}, #{y}, #{x})
+    </insert>
+    
+    <insert id="insertSelectkey">
+    	<selectKey keyProperty="addrNo" order="BEFORE" resultType="long">
+    		select max(addrNo)+1 from address
+    	</selectKey>
+        insert into address(addrNo, memberNo, addr, addrDetail, y, x) values (#{addrNo}, #{memberNo}, #{addr}, #{addrDetail}, #{y}, #{x})
+    </insert>
+    
+    <delete id="delete">
+ 		delete from address where addrNo = #{addrNo}
+ 	</delete>
+    
+  
+</mapper>

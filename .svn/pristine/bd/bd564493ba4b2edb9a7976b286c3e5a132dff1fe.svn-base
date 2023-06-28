@@ -1,0 +1,125 @@
+package kr.co.poetrypainting.service;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import kr.co.poetrypainting.domain.BoardVo;
+import kr.co.poetrypainting.domain.MemberVO;
+import kr.co.poetrypainting.domain.dto.CategoryDTO;
+import kr.co.poetrypainting.domain.dto.Criteria;
+import kr.co.poetrypainting.mapper.BoardMapper;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import lombok.extern.log4j.Log4j;
+/**
+ * 
+* @packageName    : kr.co.poetrypainting.service
+* @fileName        : BoardServiceImpl.java
+* @author        : 이시화
+* @date            : 2023.04.09
+* @description            :
+* ===========================================================
+* DATE              AUTHOR             NOTE
+* -----------------------------------------------------------
+* 2023.04.09        이시화       최초 생성
+ */
+@Service
+@AllArgsConstructor
+@NoArgsConstructor
+@Log4j
+public class BoardServiceImpl implements BoardService{
+	
+	@Autowired
+	private BoardMapper boardMapper;
+	
+	@Override
+	public void register(BoardVo vo) {
+		boardMapper.insert(vo);
+	}
+
+	@Override
+	public BoardVo get(Long bno) {
+		return boardMapper.read(bno);
+	}
+
+	@Override
+	public Long modify(BoardVo vo) {
+		return boardMapper.update(vo);
+	}
+
+	@Override
+	public void remove(Long bno) {
+		boardMapper.delete(bno);
+	}
+
+	@Override
+	public List<BoardVo> getList() {
+		
+		
+		return boardMapper.getList();
+	}
+	
+	@Override
+	public List<CategoryDTO> getCategoryList() {
+		
+		return boardMapper.getCategory();
+	}
+	
+	public List<Map<String, Object>> getListWhitAll(Criteria cri){
+		return boardMapper.getListWithName(cri);
+	}
+
+	@Override
+	public int getTotalCnt() {
+		
+		return boardMapper.getTotalCnt();
+	}
+
+	@Override
+	public int getTotalCntSearch(Criteria cri) {
+		// TODO Auto-generated method stub
+		return boardMapper.getTotalCntSearch(cri);
+	}
+
+	@Override
+	public int getAddrCnt(MemberVO member) {
+		// TODO Auto-generated method stub
+		return boardMapper.getAddrCnt(member);
+	}
+
+	@Override
+	public List<Map<String, Object>> getListWithName(Criteria cri) {
+		// TODO Auto-generated method stub
+		return boardMapper.getListWithName(cri);
+	}
+
+	@Override
+	public List<Map<String, Object>> getListWithAddr(Criteria cri, MemberVO member) {
+		// TODO Auto-generated method stub
+		return boardMapper.getListWithAddr(cri, member);
+	}
+
+	@Override
+	public List<Map<String, Object>> getListWithKeyword(Criteria cri) {
+		// TODO Auto-generated method stub
+		return boardMapper.getListWithKeyword(cri);
+	}; 
+	
+	@Override
+	public List<Map<String, Object>> getListCategory(Criteria cri, MemberVO member, int cateNo) {
+		// TODO Auto-generated method stub
+		return boardMapper.getListCate(cri, member, cateNo);
+	}
+	
+	@Override
+	public int getCateCnt(MemberVO member, int cateNo) {
+		// TODO Auto-generated method stub
+		return boardMapper.getCateCnt(member, cateNo);
+	}
+	
+	
+}

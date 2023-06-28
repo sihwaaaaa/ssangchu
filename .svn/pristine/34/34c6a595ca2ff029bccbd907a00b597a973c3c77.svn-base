@@ -1,0 +1,62 @@
+package kr.co.poetrypainting.controller;
+
+import java.util.List;
+import java.util.Optional;
+
+import javax.servlet.http.HttpSession;
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import kr.co.poetrypainting.domain.MemberVO;
+import kr.co.poetrypainting.domain.ReplyVO;
+import kr.co.poetrypainting.domain.TradeVO;
+import kr.co.poetrypainting.service.TradeService;
+import lombok.AllArgsConstructor;
+import lombok.extern.log4j.Log4j;
+
+@RequestMapping("trades")
+@RestController
+@Log4j
+@AllArgsConstructor
+public class TradeController {
+	private TradeService tradeService;
+	
+	@PostMapping("new")
+	public Long create(@RequestBody TradeVO vo) {
+		log.warn(vo);
+		tradeService.register(vo);
+		return vo.getTradeNo();
+	}
+	
+	@GetMapping("{bno}")
+	public TradeVO get(@PathVariable Long bno) {
+		log.warn(bno);
+		return tradeService.getMyList2(bno);
+	}
+	
+	@PutMapping("{bno}")
+	public int modify(@PathVariable Long bno, @RequestBody TradeVO vo) {
+//		 vo = replyService.getBno(bno);
+		log.warn(bno);
+		log.warn(vo);
+		return tradeService.modify(vo);
+		
+	}
+	
+	@GetMapping({"list/{bno}"})
+	public List<TradeVO> getList(@PathVariable Long memberNo) {
+		
+		log.warn(memberNo);
+		return tradeService.getListBySeller(memberNo);
+	}
+	
+	
+	
+	
+}

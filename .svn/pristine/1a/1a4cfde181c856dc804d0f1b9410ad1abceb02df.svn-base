@@ -1,0 +1,21 @@
+package kr.co.poetrypainting.service;
+
+import kr.co.poetrypainting.domain.ShopVO;
+
+import java.util.List;
+
+/**
+ * @author 함준혁
+ * 상점페이지 서비스
+ * @since 2023-04-05
+ */
+public interface ShopService {
+
+    // 상품목록 조회 상품에서 가져오기
+
+    // 후기목록 조회 후기에서 가져오가
+
+    int modifyName(ShopVO vo); // 상점명 수정
+
+    int modifyIntro(ShopVO vo); // 상점소개 수정
+}

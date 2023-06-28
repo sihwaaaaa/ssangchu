@@ -1,0 +1,194 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+         pageEncoding="UTF-8" isELIgnored="false" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <jsp:include page="includes/head.jsp"/>
+</head>
+<body>
+<jsp:include page="includes/header.jsp"/>
+<main class="site-main">
+    <section class="blog_area single-post-area py-80px section-margin--small">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3">
+                    <div class="blog_right_sidebar small" style="width: 250px">
+                        <div class="single_sidebar_widget author_widget">
+                            <img class="author_img rounded-circle" src="img/salad.png" alt="">
+                            <h4>${memberVO.nickname}</h4>
+                            <c:if test="${memberVO.credit >= 20}">
+                                <p>등급 : 양상추</p>
+                            </c:if>
+                            <c:if test="${memberVO.credit >= 10 and memberVO.credit < 20}">
+                                <p>등급 : 청상추</p>
+                            </c:if>
+                            <c:if test="${memberVO.credit >= 0 and memberVO.credit < 10}">
+                                <p>등급 : 상추</p>
+                            </c:if>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-9" style="padding-left: 0px">
+                    <div class="d-flex" style="justify-content: space-between;">
+                        <div class="blog_right_sidebar"
+                             style="width: auto;height: auto;padding: 5px 10px; text-align: center;">
+                            <div class="single_sidebar_widget author_widget" style="padding-top: 8px;">
+                                <p>${memberVO.nickname}</p>
+                            </div>
+                        </div>
+                        <div class="blog_right_sidebar"
+                             style="width: auto;height: auto;padding: 5px 10px; text-align: center;">
+                            <div class="single_sidebar_widget author_widget" style="padding-top: 8px;"
+                                 style="float :right;">
+                                <p>${addressVO.addr}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="blog_right_sidebar"
+                         style="width: auto;padding-left: 30px;padding-bottom: 5px;padding-top: 5px; margin-top: 10px">
+                        <ul class="d-flex">
+                            <li style="padding-right: 15px">○상점오픈일 : ${openDays}일</li>
+                            <li style="padding-right: 15px">○상점방문수 : ${shopVO.visits}명</li>
+                            <li style="padding-right: 15px">○상품판매 : 512회</li>
+                        </ul>
+                    </div>
+                    <div class="blog_right_sidebar" style="width: auto; margin-top: 10px; height: 137px;">
+                        <div class="d-flex single_sidebar_widget author_widget" style="height: max-content">
+                            <p>${shopVO.intro}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <section class="product_description_area" style="margin-top: 10px">
+            <div class="container">
+                <ul class="nav nav-tabs" id="myTab" role="tablist" style="background-color: white">
+                    <li class="nav-item" style="float: left">
+                        <a class="nav-link" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home"
+                           aria-selected="true" style="border-radius: 0; margin-right: 8px">상품목록</a>
+                    </li>
+                    <style>
+                        .product_description_area .nav.nav-tabs li a {
+                            background: #218838;
+                        }
+                    </style>
+                    <li class="nav-item" style="float: left;">
+                        <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab"
+                           aria-controls="profile"
+                           aria-selected="false" style="border-radius: 0">후기목록</a>
+                    </li>
+                </ul>
+                <div class="tab-content" id="myTabContent" style="margin-top: 30px">
+                    <div class="tab-pane fade" id="home" role="tabpanel" aria-labelledby="home-tab">
+                        <div class="row">
+                            <c:forEach items="${list}" var="board">
+                                <c:forEach items="${board.attachs}" var="attach">
+
+                                    <div class="col-md-6 col-lg-4 col-xl-3">
+                                        <div class="card text-center card-product">
+                                            <div class="card-product__img" style="box-shadow: 3px 3px 20px #ddd;">
+
+                                                <a href="${pageContext.request.contextPath}/board/${board.bno}">
+                                                    <c:if test="${attach.attNo == null}">
+                                                        <img class="card-img"
+                                                             src="${pageContext.request.contextPath}/resources/img/no-image.png"
+                                                             alt="">
+                                                    </c:if>
+                                                    <c:if test="${attach.attNo != null}">
+                                                        <img class="card-img"
+                                                             src="${pageContext.request.contextPath}/display${attach.url}"
+                                                             alt="">
+                                                    </c:if>
+                                                </a>
+                                                <ul class="card-product__imgOverlay">
+
+                                                    <li><a href="">
+                                                        <button>상점 보러가기</button>
+                                                    </a></li>
+                                                    <li>
+                                                        <button>
+                                                            <i class="ti-heart"></i>
+                                                        </button>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div class="card-body row p-3" style="text-align: left;">
+                                                <p class="col-6">${board.cateName}</p>
+                                                <p class="col-6 " font-size: 15px; style="text-align: right;">
+                                                    <i class=" fas fa-heart mt-1"></i> 50
+                                                </p>
+                                                <h4 class=" col-12 card-product__title mb-0">
+                                                    <a href="${pageContext.request.contextPath}/board/${board.bno}">${board.title}</a>
+                                                </h4>
+                                                <p class="col-12" style="font-size: 13px;">${board.addrName}</p>
+                                                <p class="col-6 mt-4">${board.memberName}</p>
+                                                <h5 class="card-product__price col-6 mt-4"
+                                                    style="text-align: right;">${board.price}원</h5>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </c:forEach>
+                            </c:forEach>
+                            <div class="container" style="text-align: center;">
+                                <a class="button button--active mt-3 mt-xl-4"
+                                   href="${pageContext.request.contextPath}/board/list">상추 더보기</a>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                        <div class="table-responsive">
+                            <div class="card-body">
+                                <ul class="list-group chat">
+                                    <div id="review" role="tabpanel" aria-labelledby="review-tab">
+                                        <div class="card-body">
+                                            <ul class="list-group chat">
+                                                <c:forEach items="${replyVOList}" var="replyVO">
+                                                    <c:forEach items="${replyBoardList}" var="replyBoard">
+                                                        <c:forEach items="${replyBoard.attachs}" var="attach">
+                                                            <c:if test="${replyBoard.bno == replyVO.bno}">
+                                                                <a href="${pageContext.request.contextPath}/board/${replyBoard.bno}">
+                                                                    <c:if test="${attach.attNo == null}">
+                                                                        <img class="card-img"
+                                                                             src="${pageContext.request.contextPath}/resources/img/no-image.png"
+                                                                             alt="">
+                                                                    </c:if>
+                                                                    <c:if test="${attach.attNo != null}">
+                                                                        <img class="card-img"
+                                                                             src="${pageContext.request.contextPath}/displaySmall${attach.url}"
+                                                                             alt="">
+                                                                    </c:if>
+                                                                </a>
+                                                                <li class="list-group-item" data-rno="\${obj.rno}">
+                                                                    <div class="header">
+                                                                        <strong class="primary-font">"${replyVO.nickname}"</strong>
+                                                                        <small class="">"${replyVO.dong}"</small>
+                                                                        <small class="float-right">"${replyVO.regdate}"</small><br>
+                                                                        <small class="">평점 :
+                                                                            "${replyVO.rating}"점</small>
+                                                                    </div>
+                                                                    <div class="form-group col-10">
+                                                                        <p>"${replyVO.comment}"</p>
+                                                                    </div>
+                                                                </li>
+                                                            </c:if>
+                                                        </c:forEach>
+                                                    </c:forEach>
+                                                </c:forEach>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </section>
+    <section style="background-color: #f2ffec;" id="parallax-1" data-anchor-target="#parallax-1">
+        <jsp:include page="includes/footer.jsp"/>
+</body>
+</html>

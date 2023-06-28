@@ -1,0 +1,59 @@
+package kr.co.poetrypainting.service;
+
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import kr.co.poetrypainting.domain.CheatVO;
+import kr.co.poetrypainting.domain.dto.PenaltyDTO;
+import kr.co.poetrypainting.mapper.AttachMapper;
+import kr.co.poetrypainting.mapper.BoardMapper;
+import kr.co.poetrypainting.mapper.CheatMapper;
+import kr.co.poetrypainting.mapper.ReplyMapper;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import lombok.extern.log4j.Log4j;
+
+@Service
+@AllArgsConstructor
+@NoArgsConstructor
+@Log4j
+public class CheatServiceImpl implements CheatService {
+  
+	@Autowired
+	private CheatMapper cheatMapper;
+
+	@Override
+	public void cheat(CheatVO vo) {
+		cheatMapper.insert(vo);
+	}
+	
+	@Override
+	public void penalty(CheatVO vo) {
+		cheatMapper.update(vo);
+	}
+	
+	@Override
+	public CheatVO read(Long chNo) {
+		
+		return cheatMapper.selectOne(chNo);
+	}
+	
+	@Override
+	public Map<String, Object> cheatList() {
+		
+		return cheatMapper.selectCheat();
+	}
+	
+	@Override
+	public Map<String, Object> penaltyList() {
+		
+		return cheatMapper.selectPenalty();
+	}
+	
+
+
+}

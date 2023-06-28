@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.poetrypainting.mapper.CheatMapper">
+
+  <!-- 신고 정보 추가 -->
+  <insert id="insertCheat" parameterType="kr.co.poetrypainting.domain.dto.CheatDTO">
+    INSERT INTO CHEAT (
+      CHEAT_CATEGORY, CHEAT_TARGET, CHEAT_DESCRIPTION,
+      CHEAT_DATE, CHEAT_STATUS
+    ) VALUES (
+      #{cheatCategory}, #{cheatTarget}, #{cheatDescription},
+      #{cheatDate}, #{cheatStatus}
+    )
+  </insert>
+
+  <!-- 신고 정보 수정 -->
+  <update id="updateCheat" parameterType="kr.co.poetrypainting.domain.dto.CheatDTO">
+    UPDATE CHEAT SET
+      CHEAT_CATEGORY = #{cheatCategory},
+      CHEAT_TARGET = #{cheatTarget},
+      CHEAT_DESCRIPTION = #{cheatDescription},
+      CHEAT_DATE = #{cheatDate},
+      CHEAT_STATUS = #{cheatStatus}
+    WHERE CHEAT_NO = #{cheatNo}
+  </update>
+
+  <!-- 신고 정보 삭제 -->
+  <delete id="deleteCheat" parameterType="long">
+    DELETE FROM CHEAT WHERE CHEAT_NO = #{chNo}
+  </delete>
+
+  <!-- 신고 정보 조회 -->
+  <select id="selectCheat" parameterType="long" resultType="kr.co.poetrypainting.domain.dto.CheatDTO">
+    SELECT * FROM CHEAT WHERE CHEAT_NO = #{chNo}
+  </select>
+
+  <!-- 모든 신고 정보 조회 -->
+  <select id="selectAllCheats" resultType="kr.co.poetrypainting.domain.dto.CheatDTO">
+    SELECT * FROM CHEAT
+  </select>
+
+  <!-- 모든 신고 분류 정보 조회 -->
+  <select id="selectAllCheatCategories" resultType="kr.co.poetrypainting.domain.dto.CheatDTO">
+    SELECT DISTINCT CHEAT_CATEGORY FROM CHEAT
+  </select>
+
+  <!-- 모든 신고 처벌 정보 조회 -->
+  <select id="selectAllPenalties" resultType="kr.co.poetrypainting.domain.dto.PenaltyDTO">
+    SELECT * FROM PENALTY
+  </select>
+
+  <!-- 신고 정보 삽입 -->
+<!--   <insert id="insertReport" parameterType="kr.co.poetrypainting.domain.dto.ReportDTO">
+    INSERT INTO report_post (board, num, title, content, writer, usernick)
+    VALUES (#{board}, #{num}, #{title}, #{content}, #{writer}, #{usernick})
+  </insert> -->
+
+</mapper>

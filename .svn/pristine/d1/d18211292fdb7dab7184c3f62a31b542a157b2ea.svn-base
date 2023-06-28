@@ -1,0 +1,5 @@
+package kr.co.poetrypainting.domain.dto;
+
+public class CheatDTO {
+
+}

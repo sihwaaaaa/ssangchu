@@ -1,0 +1,27 @@
+package kr.co.poetrypainting.domain.dto;
+
+import kr.co.poetrypainting.domain.MemberVO;
+import lombok.Data;
+
+import java.time.LocalDateTime;
+/**
+ * packageName    : kr.co.poetrypainting.domain.dto
+ * fileName       : ChatMessageDTO
+ * author         : 함준혁
+ * date           : 2023/04/12
+ * description    : 채팅메시지DTO
+ * ===========================================================
+ * DATE              AUTHOR             NOTE
+ * -----------------------------------------------------------
+ * 2023/04/12        함준혁       최초 생성
+ */
+@Data
+public class ChatMessageDTO {
+    private Long no; //메시지 번호
+    private ChatRoomDTO roomId; // 채팅방id
+    private MemberVO senderId; // 발송자ID
+    private MemberVO receiverId; // 수신자ID
+    private String content; //메시지 내용
+    private LocalDateTime sendTime; //보낸 시간
+    private boolean checked = false; // 수신 여부
+}

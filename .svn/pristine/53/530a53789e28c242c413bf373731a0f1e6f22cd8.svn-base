@@ -1,0 +1,107 @@
+//package kr.co.poetrypainting.controller;
+//
+//import java.util.*;
+////신고
+//public class CreditController {
+//	
+//    public int[] solution(String[] memberNo, String[] cheat, int k) {
+//
+//        // 신고한 사람의 신고 리스트를 추출한다.
+//        Map<String, HashSet<String>> userCheatMap = getMemberPenaltyMap(memberNo, cheat);
+//
+//        // 신고 받은 사람의 수를 카운팅한다.
+//        Map<String, Integer> cheatCountMap = getReportCountMap(memberNo, userCheatMap);
+//
+//        // 계정 블락된 사람을 확인한다.
+//        List<String> blockedMemberList = getBlockedUserList(k, cheatCountMap);
+//
+//        // 정답을 제출한다. (계정블락된 회원들과 회원이 신고한 리스트를 대조)
+//        return getAnswer(memberNo, userCheatMap, blockedMemberList);
+//    }
+//
+//    private Map<String, HashSet<String>> getMemberPenaltyMap(String[] idList, String[] report) {
+//        // MemberPenaltyMap을 만들고 초기화한다.
+//        Map<String, HashSet<String>> memberCheatMap = new HashMap<>();
+//        for (String user : idList) {
+//            memberCheatMap.put(user, new HashSet<>()); // key : user 이름, value : user가 신고한 회원 리스트(실제로는 set이지만)
+//        }
+//
+//        // 각각의 회원이 신고한 회원을 추출해 userCheatMap에 넣는다.
+//        for (String s : report) {
+//            String memberNo = s.split(" ")[0];
+//            String PanaltyMember = s.split(" ")[1];
+//
+//            HashSet<String> memberPenaltySet = memberCheatMap.get(memberNo);
+//            memberPenaltySet.add(PanaltyMember);
+//        }
+//
+//        return memberCheatMap;
+//    }
+//
+//    private Map<String, Integer> getReportCountMap(String[] idList, Map<String, HashSet<String>> memberCheatMap) {
+//        // 회원을 한 명씩 꺼내 그 회원이 총 몇 번 신고 당했는지 구해 getcheatCountMap에 담는다.
+//        Map<String, Integer> cheatCountMap = new HashMap<>();
+//
+//        for (String s : idList) {
+//            // 회원이 신고한 userCheatMap을 가져와 자신이 신고당한 횟수를 카운팅한다.
+//            int cheatCount = 0;
+//            for (String key : memberCheatMap.keySet()) {
+//                if (key.equals(s)) {
+//                    continue;
+//                }
+//
+//                HashSet<String> cheatSet = memberCheatMap.get(key);
+//                for (String cheatMember : cheatSet) {
+//                    // cheatSet에는 자신의 이름이 있거나, 없거나 둘 중 하나.
+//                    // 따라서 순회 도중 자신의 이름이 발견되면 카운팅을 1 늘리고 해당 for문을 종료시킨다.
+//                    if (cheatMember.equals(s)) {
+//                    	cheatCount++;
+//                        break;
+//                    }
+//                }
+//            }
+//            
+//            // 신고 당한 횟수를 memberCountMap에 담는다.
+//            cheatCountMap.put(s, cheatCount);
+//        }
+//
+//        return cheatCountMap;
+//    }
+//
+//    private List<String> getBlockedUserList(int k, Map<String, Integer> cheatCountMap) {
+//        // 계정 이용 정지된 회원들만 따로 담은 리스트
+//        List<String> cheatMemberList = new ArrayList<>();
+//        for (String s : cheatCountMap.keySet()) {
+//        	// 신고당한 횟수가 4 보다 크거나 같다면 blockedUserList에 추가
+//        	//        	1. 경고 (-3 차감만 진행)
+//        	//        	2. -3 차감 및 글 블라인드 
+//        	//        	3. -3 차감 및 계정 일시정지
+//        	//        	4. -3 차감 및 계정 블록
+//        	//        	5. 반려 (차감x)
+//            if (cheatCountMap.get(s) >= 4) {
+//            	cheatMemberList.add(s);
+//            }
+//        }
+//
+//        return cheatMemberList;
+//    }
+//
+//    private int[] getAnswer(String[] idList, Map<String, HashSet<String>> userCheatMap, List<String> blockedMemberList) {
+//        int[] answer = new int[idList.length];
+//        for (int i = 0; i < idList.length; i++) {
+//            String user = idList[i];
+//            HashSet<String> cheatSetOfMember = userCheatMap.get(user);
+//
+//            for (String cheatOfMember : cheatSetOfMember) {
+//                for (String blockedMember : blockedMemberList) {
+//                    if (cheatOfMember.equals(blockedMember)) {
+//                        answer[i] += 1;
+//                        break;
+//                    }
+//                }
+//            }
+//        }
+//        return answer;
+//    }
+//
+//}

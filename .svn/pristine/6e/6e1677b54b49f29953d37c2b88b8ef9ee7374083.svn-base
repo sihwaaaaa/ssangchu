@@ -1,0 +1,28 @@
+package kr.co.poetrypainting.controller;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import kr.co.poetrypainting.service.AddressService;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+
+@Controller
+@RequestMapping("/member/*")
+@Data
+@AllArgsConstructor
+public class AddressController {
+	private AddressService addressService;
+	
+	@GetMapping("/modify")
+	public String modifyGet() {
+		return "member/modify";
+	}
+	
+	@PostMapping("/modify")
+	public void modifyPost() {
+		
+	}
+}

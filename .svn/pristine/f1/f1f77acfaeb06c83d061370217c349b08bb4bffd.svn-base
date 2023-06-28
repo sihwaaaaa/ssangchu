@@ -1,0 +1,43 @@
+package kr.co.poetrypainting.service;
+
+import kr.co.poetrypainting.domain.ShopVO; // ShopVO 클래스 import
+import kr.co.poetrypainting.mapper.ShopMapper; // ShopMapper 클래스 import
+import lombok.AllArgsConstructor; // lombok 라이브러리에서 제공하는 어노테이션 import
+import org.springframework.stereotype.Service; // Spring에서 제공하는 Service 어노테이션 import
+
+/**
+ * ShopServiceImpl 클래스
+ *
+ * @author 함준혁
+ * @since 2023-04-05
+ */
+@Service // Spring에서 Bean으로 등록됨
+@AllArgsConstructor // 모든 필드에 대한 생성자를 생성하는 Lombok 어노테이션
+public class ShopServiceImpl implements ShopService {
+
+    private ShopMapper shopMapper; // ShopMapper 객체를 주입 받음
+
+    /**
+     * @author 함준혁
+     * 상점 이름을 수정하는 메서드
+     *
+     * @param vo ShopVO 객체 (수정할 상점 이름 정보를 담고 있음)
+     * @return int 업데이트된 레코드 수 반환
+     */
+    @Override
+    public int modifyName(ShopVO vo) {
+        return shopMapper.updateName(vo); // ShopMapper 인터페이스의 updateName() 메서드 호출하여 데이터베이스에서 상점 이름을 업데이트하고 업데이트된 레코드 수를 반환함
+    }
+
+    /**
+     * @author 함준혁
+     * 상점 소개를 수정하는 메서드
+     *
+     * @param vo ShopVO 객체 (수정할 상점 소개 정보를 담고 있음)
+     * @return int 업데이트된 레코드 수 반환
+     */
+    @Override
+    public int modifyIntro(ShopVO vo) {
+        return shopMapper.updateIntro(vo); // ShopMapper 인터페이스의 updateIntro() 메서드 호출하여 데이터베이스에서 상점 소개를 업데이트하고 업데이트된 레코드 수를 반환함
+    }
+}
