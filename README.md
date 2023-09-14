@@ -32,26 +32,28 @@
 
 ### [▶️View Demo](https://ssangchu.poetrypainting.co.kr/)
 
+- 데모체험을 위한 로그인 정보
+- ID:javaman
+- PW:1234
+
 ### [▶️Other Projects (Portfolio) ](https://sihwaaaaa.github.io/)
 
 <br>
 
 ## ✔️ 목차
 
-1. [ 상추마켓 ❓](#-줍깅-프로젝트)
+1. [ 상추마켓 ❓](#❓-상추마켓)
    - [프로젝트 개요](#프로젝트-개요)
-   - [상추마켓?](#상추마켓)
-2. [설계 🛠](#-설계)
+   - [상추마켓이 뭔가요?](#상추마켓이-뭔가요)
+2. [설계 🛠](#🛠-설계)
    - [요구사항 정의서](#요구사항-정의서)
    - [프로토 타이핑](#프로토-타이핑)
    - [데이터 베이스 구조](#데이터-베이스-구조)
    - [프로젝트 관련 서류](#프로젝트-관련-서류)
-3. [ 상추마켓 주요 기능 ⭐️](#-상추마켓-주요-기능)
-4. [이슈사항 및 리뷰](#이슈사항-및-리뷰)
-   - [발생 이슈](#발생-이슈)
-   - [리뷰](#리뷰)
-5. [팀 소개 👬](#-팀-소개)
-6. [활용 API](#활용-API)
+3. [ 상추마켓 주요 기능 ⭐️](#⭐️상추마켓-주요-기능)
+4. [이슈사항 및 리뷰](#❗️-이슈사항-및-리뷰)
+5. [팀 소개 👬](#👬-팀-소개)
+6. [활용 API](#활용-api)
 
 <br>
 
@@ -69,7 +71,7 @@
   - 첨부파일 : 이미지 위주의 웹페이지로 첨부파일 컨트롤
   - 다양한 외부 API와 Library 활용
 
-### 상추마켓 ?
+### 상추마켓이 뭔가요?
 
 - 사용자가 설정한 주소를 바탕으로 지역내의 다른 유저와 실시간 채팅을 통해 거래를 진행하는 위치기반 중고거래 플랫폼
 - 중고나라, 번개장터, 당근마켓 등 현존하는 중고거래 플랫폼을 모티브로 제작
@@ -189,171 +191,23 @@
 
 <br>
 
-## 이슈사항 및 리뷰
+## ❗️ 이슈사항 및 리뷰
 
-### 발생 이슈
+> 현재 메일건 api 무료기한 만료로 메일인증이 불가하며 없어도 회원가입은 가능합니다. 또한 프로젝트 용량이 커서 AWS 프리티어에서는 서버과부화가 걸립니다. 페이지 로딩시 체감될 정도로 느립니다. 회원 및 후기 부분의 오류가 있으며 전체적으로 사용자 UI/UX 부분이 부족합니다. 건강상의 이유로 중도하차한 팀원의 기능을 제가 맡게 되어 본인의 담당기능을 구현하기도 바빠 팀원들의 어려움을 많이 도와주지 못해 팀장으로서 많이 아쉬움이 남습니다.
 
-❗️ **공공데이터와 TMAP API 사용 좌표 사용 괴리**
+> 찜(좋아요),구독 및 반응형웹 등 요구사항으로 있었던 후순위 기능들을 시간에 쫓겨 구현하지 못했습니다. 세미 프로젝트였음에도 데이터베이스 테이블 16개정도의 다소 큰 볼륨과 미숙했던 spring 프레임워크 사용으로 자잘한 오류와 함께 완성도가 조금 떨어집니다.
 
-- 공공데이터의 좌표가 API에서 요청하는 위경도 값이 아닌 gs80tm 좌표 사용 -> 좌표마다 일일이 API에 변환 요청을 할 경우 과다한 호출 우려
+> 프로젝트 버전관리 툴로 SVN을 사용했습니다. 팀장으로서 SVN서버를 직접 구축했으며, 요구사항 정의서, 테이블명세서, API정의서 등 프로젝트 관련 서류를 책임지고 작업했습니다. PPT제작 & 발표 & 시연 또한 직접 작업했습니다.
 
-✔️ **TMAP API의 좌표변환 기능을 사용하여 위경도 좌표로 변환된 값을 DB에 저장**
-
-```
-// 이 코드에서는 전에 db에 저장한 데이터를 불러와서 tmapAPI에 좌표변환을 요청합니다
-// (GRS80TM(기존 좌표계 - Transverse_Mercator 투영법과 GRS_1980 타원체를 사용) => WGS84GEO(변환될 좌표계- 경위도))
-// 응답 값들을 기존 디비 값에 업데이트 시킵니다
-
-  const location = useLocation();
-  const route = location.state;
-  const [result, setResult] = useState({ lon: null, lat: null });
-  const [startX, setStartX] = useState(route.startX);
-  const [startY, setStartY] = useState(route.startY);
-  function coordConvert(lat, lon) {
-    axios
-      .get(
-        `https://apis.openapi.sk.com/tmap/geo/coordconvert?version=1&format=json&callback=result&fromCoord=GRS80TM&lon=${lon}&lat=${lat}&appKey=앱키`,
-      )
-      .then(function (response) {
-        const resultCoordinate = response.data.coordinate;
-        const lon2 = resultCoordinate.lon;
-        const lat2 = resultCoordinate.lat;
-        const result = { lon: lon2, lat: lat2 };
-        setResult(result);
-        console.log(result);
-      })
-      .catch(function (error) {
-        console.error('code:', error.response.status);
-        console.error('message:', error.response.data);
-        console.error('error:', error.message);
-      });
-  }
-
-  useEffect(() => {
-    axios
-      .get(
-        `https://apis.openapi.sk.com/tmap/geo/coordconvert?version=1&format=json&callback=result&fromCoord=GRS80TM&lon=${startY}&lat=${startY}&appKey=앱키`,
-      )
-      .then(function (response) {
-        const resultCoordinate = response.data.coordinate;
-        const lon2 = resultCoordinate.lon;
-        const lat2 = resultCoordinate.lat;
-        const result = { lon: lon2, lat: lat2 };
-        console.log(result);
-      })
-      .catch(function (error) {
-        console.error('code:', error.response.status);
-        console.error('message:', error.response.data);
-        console.error('error:', error.message);
-      });
-    console.log(result.lon);
-    setStartX(result.lon);
-    setStartY(result.lat);
-    const map = new Tmapv2.Map('map_div', {
-      center: new Tmapv2.LatLng(startX, startY),
-      width: '100%',
-      height: '700px',
-      zoom: 15,
-    });
-    const marker = new Tmapv2.Marker({
-      position: new Tmapv2.LatLng(startX, startY),
-      icon: 'http://tmapapi.sktelecom.com/resources/images/common/pin_car.png',
-      map,
-    });
-    // const content = '<div>' + '    <button>' + '        시작하기';
-    // '    </button>' + '</div>';
-    // const infoWindow = new Tmapv2.InfoWindow({
-    //   position: new Tmapv2.LatLng(latitude, longitude), //Popup 이 표출될 맵 좌표
-    //   content: content, //Popup 표시될 text
-    //   type: 2, //Popup의 type 설정.
-    //   map: map, //Popup이 표시될 맵 객체
-    //   align: Tmapv2.InfoWindowOptions.ALIGN_LEFTBOTTOM,
-    // });
-  }, [route]);
-
-```
-
----
-
-❗️ **TMAP API 보행자 경로 경유지 수 제한**
-
-- 사용하고 있는 데이터의 경유지는 평균 10개이상이지만 TMPA API에서 지원하는 보행자 경로는 5개까지만 경유지 설정 가능
-
-✔️ **API를 다수 호출하여 지도에 한번에 표시**
-
-- 출발지 ~ 6번째 경유지로 API호출 이어서 6번째 경유지 ~ n번째 경유지 호출 ~ 도착지 경유지까지 반복
-
-```
- // 경유지 개수별 나누기
-    const passResult = [];
-    const numStops = stopovers.length;
-
-    for (let i = 0; i < numStops; i += 5) {
-      const passListSlice = passList.slice(i, i + 5);
-      const passResultSlice = parsePassList(passListSlice);
-
-      if (i + 5 < numStops) {
-        const nextStop = stopovers[i + 5];
-        const nextX = nextStop.viaX;
-        const nextY = nextStop.viaY;
-        tmapApi(passResultSlice, startX, startY, nextX, nextY);
-      } else {
-        tmapApi(passResultSlice, startX, startY, endX, endY);
-      }
-    }
-
-    if (numStops > 5) {
-      const lastStopIndex = Math.min(numStops, 5);
-      const lastPassList = passList.slice(lastStopIndex);
-      const lastPassResult = parsePassList(lastPassList);
-      const lastStop = stopovers[lastStopIndex - 1];
-      const lastX = lastStop.viaX;
-      const lastY = lastStop.viaY;
-      tmapApiNotPass(lastX, lastY, endX, endY);
-    }
-
-```
-
----
-
-❗️ **Geolocation API의 HTTP 프로토콜 비호환**
-
-- localhost를 제외한 http 프로토콜에서는 geolocation 이용불가
-
-✔️ **무료인증서 certbot를 이용해 HTTPS로 변환**
-
----
-
-### 리뷰
-
-> TMAP API의 사용가이드는 js 베이스였기 때문에 리액트에 대한 개념과 경험이 많이 부족한 상태에서 어려움이 있었지만 어이없는 경우의 많은 삽질 끝에 많이 배울 수 있었습니다. 😂
-
-> 플로깅 시작시 시간카운팅에 대한 오류와 useEffect 제어가 미숙해 새로고침을 안하면 지도가 로딩되지 않는 경우의 오류가 있습니다. 이러한 오류들과 직선거리로만 이동거리를 계산한다는 점이 큰 아쉬움으로 남습니다.
-
-> 모바일 앱 환경이 아닌 웹기반으로 제작되었기 때문에 설계시 이게 가능할까 어떻게 구현해야할까 많은 고민이 있었습니다. 또한 제한된 환경에서 테스팅조차 어려움이 있었기에 걱정이 많았지만 실제로 모바일 웹에서 작동하는 걸 보며 굉장히 뿌듯함을 느꼈습니다.
-
-> 프로젝트에서 어렵고 중요한 핵심 기능을 맡았고 api를 적극활용해야 했기에 어려움이 많았지만 오히려 그만큼 성장할 수 있는 시간이었습니다. 또한 난이도가 높았던 만큼 재미도 있었기에 후순위였던 기능들도 꼭 나중에 구현해보고 싶습니다.
+> 팀장을 맡아 부담감도 크고 그만큼 역량이 부족한 것 같아 처음엔 자신감이 없었지만 팀원들이 같이 으쌰으샤 해주고 많이 도와줘서 무사히 끝낼 수 있었던 것 같습니다. 팀워크와 소통의 중요성을 깨달을 수 있었습니다. 또한 프로그래밍을 접한지 3개월정도의 지식과 경험에 비해 좋은 결과물을 냈다고 생각하며 그만큼 많은 시간 몰두했고 프로그래밍의 매력을 알게되었습니다.
 
 <br>
 
 ## 👬 팀 소개
 
-<div align="center">
-
-|                                                            천은경(팀장)                                                            |                                      김민수                                       |                                      박연재                                       |
-| :--------------------------------------------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------: |
-| <img height="160px" src="https://user-images.githubusercontent.com/121186383/242636171-4e873ee3-bb3e-4961-806a-2f960c7210d1.jpg"/> | <img width="160px" src="https://avatars.githubusercontent.com/u/113892151?v=4" /> | <img width="160px" src="https://avatars.githubusercontent.com/u/132035172?v=4" /> |
-|                                                 [@olo02](https://github.com/olo02)                                                 |              [@KimMinSoocoding](https://github.com/KimMinSoocoding)               |                    [@yeonjae97](https://github.com/yeonjae97)                     |
-|                               - SNS 및 플친 기능 <br> - 커뮤니티/첨부파일 <br> - 회원 기능 : 관리자                                |         - 챌린지 기능 <br> - 챌린지원 및 일정 <br> - 로고 및 뱃지 디자인          |                     - 회원 기능 <br> - Security <br> - Oauth                      |
-
-|                                   ⭐️이시화⭐️                                    |                                      이재원                                       |     |
-| :-------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------: | :-: |
-| <img height="160px" src="https://avatars.githubusercontent.com/u/132035158?v=4"/> | <img height="160px" src="https://avatars.githubusercontent.com/u/132035168?v=4"/> |     |
-|                    [@sihwaaaaa](https://github.com/sihwaaaaa)                     |               [@flatspringjava](https://github.com/flatspringjava)                |     |
-|                - 플로깅 기능 <br> - 데이터 마이닝 <br> - 추천경로                 |                        - 리워드 기능 <br> - 포인트 및 뱃지                        |     |
-
-</div>
+![role](https://sihwaaaaa.github.io/img/ssangchu-img/role.png)
+<br>
 
 ## 활용 API
 
-![API](https://sihwaaaaa.github.io/img/api.png)
+![API](https://sihwaaaaa.github.io/img/ssangchu-img/api.jpg)
